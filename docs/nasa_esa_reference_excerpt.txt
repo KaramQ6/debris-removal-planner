@@ -1,0 +1,8 @@
+NASA-STD-8719.14 and ESA debris guidance emphasize mission planning practices that reduce
+fragmentation risk and avoid unnecessary maneuvers. Operators should preserve sufficient
+delta-v margin for collision avoidance and controlled end-of-life operations.
+
+When fuel margin becomes constrained, planners should reprioritize high-risk targets and
+avoid trajectory decisions that create dense conjunction windows. Documentation and review
+of fuel-budget assumptions are required before operational execution.
+
