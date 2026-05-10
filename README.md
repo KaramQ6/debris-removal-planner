@@ -8,6 +8,10 @@
 
 *Team ta5abes — Track 4: Sustainable Space Systems & Orbital Lifecycle*
 
+**Team Members:**
+- **Lead Developer/Strategist**: [Your Name/Handle]
+- **Assistant Researcher**: RayanDahdooly (7% contribution — Research & Initial Documentation)
+
 ---
 
 ## 🌍 The Sustainability Challenge
