@@ -30,11 +30,9 @@ wheels/
 htmlcov/
 
 # Results and Outputs
-# Ignore everything in results/ except the .gitkeep file
-results/*
-!results/.gitkeep
-results/models/
+# Include results for submission
 results/tb_logs/
+results/models/
 
 # Media and temporary artifacts
 media_*.png

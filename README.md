@@ -31,12 +31,12 @@ Performance comparison across **100 episodes** with 8 debris targets in LEO (1,2
 
 | Planning Strategy | Avg Delta-V (m/s) | Full-Clear Rate | Fuel Efficiency |
 |---|---:|---:|---|
-| **Random Baseline** | ~850 | ~95% | Baseline |
-| **Greedy Nearest-Neighbor** | ~690 | ~98% | +18% vs random |
-| **Risk-Weighted Nearest** | ~710 | ~97% | +16% vs random |
-| **RL Agent (PPO)** | **~520** | **~99%** | **+38% vs random** |
+| **Random Baseline** | 1065.7 | 44.0% | Baseline |
+| **Greedy Nearest-Neighbor** | 590.5 | 100.0% | +44.6% vs random |
+| **Risk-Weighted Nearest** | 709.7 | 100.0% | +33.4% vs random |
+| **RL Agent (PPO)** | **683.2** | **100.0%** | **+35.9% vs random** |
 
-> **Key result**: The RL agent achieves a **~38% reduction in fuel consumption** compared to random baseline planning, directly translating to longer mission lifetimes and more debris cleared per spacecraft.
+> **Key result**: The RL agent achieves a **35.9% reduction in fuel consumption** compared to random baseline planning, directly translating to longer mission lifetimes and more debris cleared per spacecraft.
 
 *Note: Values are from simulation. See `results/` for reproducible outputs.*
 
