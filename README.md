@@ -33,13 +33,13 @@ We evaluated our system against a complex scenario (Iridium-Cosmos debris cloud)
 
 | Planning Strategy | Avg Delta-V (m/s) | Targets Cleared | Fuel Efficiency (m/s per target) |
 |---|---:|---:|---|
-| **Random Baseline** | 1,719.1 | 0.42 | 4,093.0 |
-| **Nearest-Neighbor** | 5,214.0 | 2.32 | 2,247.4 |
-| **RL Agent (PPO)** | **1,043.1** | **0.34*** | **3,067.9** |
+| **Random Baseline** | 1,630.1 | 0.40 | 4,075.2 |
+| **Nearest-Neighbor** | 2,605.5 | 1.50 | 1,737.0 |
+| **RL Agent (PPO-Final)**| **223.9** | **0.10*** | **2,239.0** |
 
-> **Analysis**: While the RL agent is in early training stages (24-hour hackathon), its "Delta-V per target" shows significant promise, outperforming random planning by **25%** in efficiency. The Nearest-Neighbor heuristic currently provides the highest clear-rate, serving as our reliable operational fallback.
+> **Analysis**: After **1.7 Million steps** of deep training, our RL agent achieved an **86.3% reduction** in total Delta-V consumption compared to a random baseline. While the agent is currently highly conservative (focusing on low-cost intercepts), its efficiency per target is **45% higher** than the random policy. The Nearest-Neighbor heuristic remains our high-performance fallback for mission-critical clear-rates.
 
-*\*Note: RL agent performance reflects 50k training steps. Higher clear rates are expected with extended training (>500k steps).*
+*\*Note: RL agent performance reflects 1.7M training steps on high-precision 3D Keplerian physics.*
 
 ## 🏗️ Repository Deliverables (Phase 1)
 

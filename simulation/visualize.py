@@ -64,7 +64,9 @@ def _run_single_episode(
     scenario = scenario_func(seed=seed)
     
     env = OrbitDebrisEnv(
-        scenario=scenario, seed=seed, max_targets=max(12, len(scenario.targets))
+        scenario_generator=lambda **kwargs: scenario,
+        seed=seed,
+        max_targets=max(12, len(scenario.targets))
     )
     obs, _ = env.reset(seed=seed)
     rng = np.random.default_rng(seed)
@@ -72,10 +74,10 @@ def _run_single_episode(
     model = None
     if policy_name == "ppo":
         try:
-            from stable_baselines3 import PPO
-            model = PPO.load(model_path)
+            from sb3_contrib import MaskablePPO
+            model = MaskablePPO.load(model_path)
         except ImportError:
-            print("Warning: stable_baselines3 not installed, skipping PPO.")
+            print("Warning: sb3_contrib not installed, skipping PPO.")
 
     done = False
     info: dict = {}
