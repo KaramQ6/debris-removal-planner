@@ -172,3 +172,4 @@ This project was developed primarily through team effort during a 24-hour hackat
 
 **Crucially, the core reinforcement learning model architecture, training logic, and orbital physics environment were designed, implemented, and trained entirely by the team.** All technical results and performance metrics presented are the direct result of our own model training and validation sessions. All technical content, problem framing, architectural decisions, and quantitative estimates were reviewed and validated by team ta5abes. Baseline vs. optimized comparison values represent simulated results reproducible from the submitted code.
 
+ 
