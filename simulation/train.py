@@ -12,14 +12,19 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--timesteps", type=int, default=1_000_000)
     parser.add_argument("--targets", type=int, default=8)
-    parser.add_argument("--fuel", type=float, default=1200.0)
+    parser.add_argument("--fuel", type=float, default=6000.0)
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--seed", type=int, default=7)
+    parser.add_argument(
+        "--scenario", type=str, default="medium",
+        help="Scenario preset name (easy, medium, hard, shakti, etc.) or path to Celestrak JSON file."
+    )
     parser.add_argument(
         "--output", type=str, default=r"results\models\ppo_debris"
     )
     parser.add_argument(
-        "--log-dir", type=str, default=r"results\tb_logs"
+        "--load-model", type=str, default="",
+        help="Path to an existing model .zip to resume training from."
     )
     return parser.parse_args()
 
@@ -51,11 +56,20 @@ def main() -> None:
             "Install: pip install sb3-contrib stable-baselines3"
         ) from exc
 
+    import functools
     from .callbacks import EpisodeMetricsCallback
     from .orbit_env import OrbitDebrisEnv
+    from .scenario import SCENARIO_PRESETS, from_celestrak_json
+    
+    scenario_path = Path(args.scenario)
+    if scenario_path.exists() and scenario_path.suffix.lower() == '.json':
+        scenario_generator = functools.partial(from_celestrak_json, filepath=scenario_path)
+    else:
+        scenario_generator = SCENARIO_PRESETS.get(args.scenario, SCENARIO_PRESETS["medium"])
 
     # Training environment: ActionMasker first, then Monitor
     raw_train_env = OrbitDebrisEnv(
+        scenario_generator=scenario_generator,
         seed=args.seed,
         target_count=args.targets,
         fuel_budget=args.fuel,
@@ -66,6 +80,7 @@ def main() -> None:
 
     # Separate eval environment (also needs action masking)
     raw_eval_env = OrbitDebrisEnv(
+        scenario_generator=scenario_generator,
         seed=args.seed + 999,
         target_count=args.targets,
         fuel_budget=args.fuel,
@@ -95,22 +110,31 @@ def main() -> None:
     # Training metrics are captured by EpisodeMetricsCallback instead.
     tb_log = None
 
-    model = MaskablePPO(
-        "MlpPolicy",
-        train_env,
-        verbose=1,
-        learning_rate=linear_schedule(3e-4),
-        n_steps=2048,
-        batch_size=64,
-        n_epochs=10,
-        gamma=0.99,
-        gae_lambda=0.95,
-        clip_range=0.2,
-        ent_coef=0.01,
-        seed=args.seed,
-        device="auto",
-        tensorboard_log=tb_log,
-    )
+    if args.load_model:
+        print(f"Loading existing model from: {args.load_model}")
+        model = MaskablePPO.load(
+            args.load_model,
+            env=train_env,
+            tensorboard_log=tb_log,
+            device="auto",
+        )
+    else:
+        model = MaskablePPO(
+            "MlpPolicy",
+            train_env,
+            verbose=1,
+            learning_rate=linear_schedule(3e-4),
+            n_steps=2048,
+            batch_size=64,
+            n_epochs=10,
+            gamma=0.99,
+            gae_lambda=0.95,
+            clip_range=0.2,
+            ent_coef=0.01,
+            seed=args.seed,
+            device="auto",
+            tensorboard_log=tb_log,
+        )
 
     print(f"Training MaskablePPO for {args.timesteps:,} timesteps ...")
     print(f"  Targets: {args.targets}  |  Fuel budget: {args.fuel} m/s")

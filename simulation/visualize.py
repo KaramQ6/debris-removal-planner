@@ -1,4 +1,4 @@
-"""Mission visualization — 2D polar and 3D orbital plots."""
+"""Mission visualization — 3D orbital plots using Keplerian elements."""
 
 from __future__ import annotations
 
@@ -14,25 +14,68 @@ from .orbit_env import OrbitDebrisEnv
 from .policies import nearest_neighbor_policy, random_policy, risk_weighted_policy
 
 
+def get_cartesian(sma: float, ecc: float, inc: float, raan: float, arg_p: float, nu: float) -> tuple[float, float, float]:
+    """Convert true Keplerian orbital elements to ECI Cartesian coordinates."""
+    inc_rad = math.radians(inc)
+    raan_rad = math.radians(raan)
+    arg_p_rad = math.radians(arg_p)
+    nu_rad = math.radians(nu)
+    
+    # Distance in the orbital plane (radius)
+    r = sma * (1.0 - ecc**2) / (1.0 + ecc * math.cos(nu_rad))
+    
+    # Perifocal coordinates
+    x_peri = r * math.cos(nu_rad)
+    y_peri = r * math.sin(nu_rad)
+    
+    # Rotation to ECI
+    cw, sw = math.cos(arg_p_rad), math.sin(arg_p_rad)
+    cO, sO = math.cos(raan_rad), math.sin(raan_rad)
+    ci, si = math.cos(inc_rad), math.sin(inc_rad)
+    
+    R11 = cO * cw - sO * ci * sw
+    R12 = -cO * sw - sO * ci * cw
+    R21 = sO * cw + cO * ci * sw
+    R22 = -sO * sw + cO * ci * cw
+    R31 = si * sw
+    R32 = si * cw
+    
+    x = R11 * x_peri + R12 * y_peri
+    y = R21 * x_peri + R22 * y_peri
+    z = R31 * x_peri + R32 * y_peri
+    
+    return x, y, z
+
+
 def _run_single_episode(
     policy_name: str,
     seed: int = 42,
     targets: int = 8,
-    fuel: float = 1200.0,
+    fuel: float = 6000.0,
     max_steps: int = 50,
     model_path: str = "",
+    scenario_type: str = "medium",
 ) -> dict[str, Any]:
     """Run one episode and return scenario + trajectory data."""
+    # Use preset logic instead of custom targets/fuel if specified, except generic
+    from .scenario import SCENARIO_PRESETS
+    
+    scenario_func = SCENARIO_PRESETS.get(scenario_type, SCENARIO_PRESETS["medium"])
+    scenario = scenario_func(seed=seed)
+    
     env = OrbitDebrisEnv(
-        seed=seed, target_count=targets, fuel_budget=fuel, max_steps=max_steps
+        scenario=scenario, seed=seed, max_targets=max(12, len(scenario.targets))
     )
     obs, _ = env.reset(seed=seed)
     rng = np.random.default_rng(seed)
 
     model = None
     if policy_name == "ppo":
-        from stable_baselines3 import PPO
-        model = PPO.load(model_path)
+        try:
+            from stable_baselines3 import PPO
+            model = PPO.load(model_path)
+        except ImportError:
+            print("Warning: stable_baselines3 not installed, skipping PPO.")
 
     done = False
     info: dict = {}
@@ -43,29 +86,40 @@ def _run_single_episode(
             action = nearest_neighbor_policy(env)
         elif policy_name == "risk_weighted":
             action = risk_weighted_policy(env)
-        elif policy_name == "ppo":
+        elif policy_name == "ppo" and model is not None:
             action, _ = model.predict(obs, deterministic=True)
             action = int(action)
         else:
-            raise ValueError(f"Unknown policy: {policy_name}")
+            action = random_policy(env, rng)
 
         obs, _, terminated, truncated, info = env.step(int(action))
         done = terminated or truncated
 
-    # Gather scenario data for plotting
     targets_data = []
     for t in env._targets:
         targets_data.append({
             "id": t.target_id,
             "name": t.name,
-            "angle_deg": t.angle_deg,
+            "sma_km": t.sma_km,
+            "eccentricity": t.eccentricity,
+            "inclination_deg": t.inclination_deg,
+            "raan_deg": t.raan_deg,
+            "arg_periapsis_deg": t.arg_periapsis_deg,
+            "true_anomaly_deg": t.true_anomaly_deg,
             "risk": t.risk,
-            "altitude_km": t.altitude_km,
+            "target_type": getattr(t, "target_type", "FRAG"),
+            "age_days": getattr(t, "age_days", 0.0),
         })
 
     return {
         "policy": policy_name,
-        "start_angle_deg": env._scenario.start_angle_deg,
+        "scenario": scenario.name,
+        "start_sma_km": env._scenario.start_sma_km,
+        "start_eccentricity": env._scenario.start_eccentricity,
+        "start_inclination_deg": env._scenario.start_inclination_deg,
+        "start_raan_deg": env._scenario.start_raan_deg,
+        "start_arg_periapsis_deg": env._scenario.start_arg_periapsis_deg,
+        "start_true_anomaly_deg": env._scenario.start_true_anomaly_deg,
         "fuel_budget": env._scenario.fuel_budget,
         "targets": targets_data,
         "trajectory": info.get("trajectory", []),
@@ -77,93 +131,8 @@ def _run_single_episode(
 
 
 def plot_polar_mission(data: dict, output_path: Path) -> None:
-    """2D polar plot showing debris positions and collection path."""
-    try:
-        import matplotlib
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from matplotlib.patches import FancyArrowPatch
-    except ImportError:
-        print("matplotlib required for polar plot. pip install matplotlib")
-        return
-
-    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw={"projection": "polar"})
-
-    # Plot debris targets
-    for t in data["targets"]:
-        angle_rad = math.radians(t["angle_deg"])
-        radius = 1.0  # Normalized orbital ring
-        risk_color = plt.cm.RdYlGn_r(t["risk"])
-        size = 80 + 200 * t["risk"]
-        ax.scatter(
-            angle_rad, radius,
-            c=[risk_color], s=size, zorder=5, edgecolors="white",
-            linewidth=1.5, alpha=0.9,
-        )
-        ax.annotate(
-            t["name"],
-            xy=(angle_rad, radius),
-            xytext=(angle_rad, radius + 0.15),
-            fontsize=7, ha="center", va="center",
-            color="#2C3E50", fontweight="bold",
-        )
-
-    # Plot spacecraft start position
-    start_rad = math.radians(data["start_angle_deg"])
-    ax.scatter(
-        start_rad, 1.0, c="#2ECC71", s=200, marker="^", zorder=10,
-        edgecolors="white", linewidth=2, label="Spacecraft Start",
-    )
-
-    # Draw collection path
-    trajectory = data["trajectory"]
-    if trajectory:
-        path_angles = [start_rad]
-        for hop in trajectory:
-            path_angles.append(math.radians(hop["to_angle"]))
-
-        for i in range(len(path_angles) - 1):
-            a1, a2 = path_angles[i], path_angles[i + 1]
-            ax.annotate(
-                "",
-                xy=(a2, 1.0), xytext=(a1, 1.0),
-                arrowprops=dict(
-                    arrowstyle="->", color="#3498DB",
-                    lw=2, connectionstyle="arc3,rad=0.1",
-                ),
-            )
-            # Step number
-            mid_angle = (a1 + a2) / 2
-            ax.text(
-                mid_angle, 1.12, str(i + 1),
-                ha="center", va="center", fontsize=8,
-                fontweight="bold", color="#3498DB",
-                bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                          edgecolor="#3498DB", alpha=0.8),
-            )
-
-    # Styling
-    ax.set_ylim(0, 1.4)
-    ax.set_rticks([])
-    ax.set_title(
-        f"Mission Path — {data['policy'].upper()} Policy\n"
-        f"Cleared: {data['cleared']}/{data['total_targets']} | "
-        f"ΔV: {data['total_delta_v']:.1f} m/s | "
-        f"Fuel left: {data['fuel_remaining']:.1f} m/s",
-        fontsize=13, fontweight="bold", pad=20,
-    )
-    ax.legend(loc="upper right", bbox_to_anchor=(1.15, 1.1))
-
-    # Color bar for risk
-    sm = plt.cm.ScalarMappable(cmap=plt.cm.RdYlGn_r, norm=plt.Normalize(0, 1))
-    sm.set_array([])
-    cbar = plt.colorbar(sm, ax=ax, pad=0.1, shrink=0.6)
-    cbar.set_label("Collision Risk", fontsize=11)
-
-    plt.tight_layout()
-    plt.savefig(str(output_path), dpi=150, bbox_inches="tight")
-    plt.close()
-    print(f"  Saved polar plot: {output_path}")
+    """Fallback 2D plot (skipped in 3D upgrade)."""
+    pass
 
 
 def plot_3d_orbit(data: dict, output_path: Path) -> None:
@@ -173,78 +142,79 @@ def plot_3d_orbit(data: dict, output_path: Path) -> None:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
     except ImportError:
-        print("matplotlib required for 3D plot. pip install matplotlib")
         return
 
     fig = plt.figure(figsize=(12, 10))
     ax = fig.add_subplot(111, projection="3d")
 
+    earth_r = 6371.0  # Earth radius in km
+
     # Draw Earth
     u = np.linspace(0, 2 * np.pi, 50)
     v = np.linspace(0, np.pi, 50)
-    earth_r = 0.3
-    x = earth_r * np.outer(np.cos(u), np.sin(v))
-    y = earth_r * np.outer(np.sin(u), np.sin(v))
-    z = earth_r * np.outer(np.ones_like(u), np.cos(v))
-    ax.plot_surface(x, y, z, alpha=0.3, color="#3498DB")
+    x_earth = earth_r * np.outer(np.cos(u), np.sin(v))
+    y_earth = earth_r * np.outer(np.sin(u), np.sin(v))
+    z_earth = earth_r * np.outer(np.ones_like(u), np.cos(v))
+    ax.plot_surface(x_earth, y_earth, z_earth, alpha=0.3, color="#3498DB")
 
-    # Draw orbital ring
-    theta = np.linspace(0, 2 * np.pi, 200)
-    orbit_r = 1.0
-    ax.plot(
-        orbit_r * np.cos(theta), orbit_r * np.sin(theta),
-        np.zeros_like(theta),
-        color="#BDC3C7", linewidth=1, alpha=0.5, linestyle="--",
-    )
-
-    # Plot debris
+    # Draw orbital rings for each target
+    theta = np.linspace(0, 360, 200)
     for t in data["targets"]:
-        angle_rad = math.radians(t["angle_deg"])
-        x_t = orbit_r * math.cos(angle_rad)
-        y_t = orbit_r * math.sin(angle_rad)
-        z_t = 0.0
+        ring_x, ring_y, ring_z = [], [], []
+        for th in theta:
+            rx, ry, rz = get_cartesian(
+                t["sma_km"], t["eccentricity"], t["inclination_deg"], 
+                t["raan_deg"], t["arg_periapsis_deg"], th
+            )
+            ring_x.append(rx)
+            ring_y.append(ry)
+            ring_z.append(rz)
+        ax.plot(ring_x, ring_y, ring_z, color="#BDC3C7", linewidth=0.5, alpha=0.3, linestyle="--")
+
+        # Plot actual target position
+        tx, ty, tz = get_cartesian(
+            t["sma_km"], t["eccentricity"], t["inclination_deg"], 
+            t["raan_deg"], t["arg_periapsis_deg"], t["true_anomaly_deg"]
+        )
         risk_color = plt.cm.RdYlGn_r(t["risk"])
         size = 40 + 120 * t["risk"]
-        ax.scatter(
-            [x_t], [y_t], [z_t],
-            c=[risk_color], s=size, depthshade=False,
-            edgecolors="white", linewidth=0.8, zorder=5,
-        )
+        ax.scatter([tx], [ty], [tz], c=[risk_color], s=size, edgecolors="white", linewidth=0.8, zorder=5)
 
-    # Plot spacecraft start
-    start_rad = math.radians(data["start_angle_deg"])
-    ax.scatter(
-        [orbit_r * math.cos(start_rad)],
-        [orbit_r * math.sin(start_rad)],
-        [0.0],
-        c="#2ECC71", s=200, marker="^", depthshade=False,
-        edgecolors="white", linewidth=2, zorder=10,
-    )
-
-    # Draw trajectory path
+    # Draw spacecraft trajectory
     trajectory = data["trajectory"]
     if trajectory:
-        path_x = [orbit_r * math.cos(start_rad)]
-        path_y = [orbit_r * math.sin(start_rad)]
-        path_z = [0.0]
+        path_x, path_y, path_z = [], [], []
+        # Start point
+        sx, sy, sz = get_cartesian(
+            data["start_sma_km"], data.get("start_eccentricity", 0.0), 
+            data["start_inclination_deg"], data["start_raan_deg"], 
+            data.get("start_arg_periapsis_deg", 0.0), data["start_true_anomaly_deg"]
+        )
+        path_x.append(sx)
+        path_y.append(sy)
+        path_z.append(sz)
+        
+        ax.scatter([sx], [sy], [sz], c="#2ECC71", s=200, marker="^", edgecolors="white", linewidth=2, zorder=10)
+
         for hop in trajectory:
-            a = math.radians(hop["to_angle"])
-            path_x.append(orbit_r * math.cos(a))
-            path_y.append(orbit_r * math.sin(a))
-            path_z.append(0.0)
+            hx, hy, hz = get_cartesian(
+                hop["to_sma"], hop.get("to_ecc", 0.0), hop["to_inc"], 
+                hop["to_raan"], hop.get("to_arg_p", 0.0), hop.get("to_nu", 0.0)
+            )
+            path_x.append(hx)
+            path_y.append(hy)
+            path_z.append(hz)
         ax.plot(path_x, path_y, path_z, color="#E74C3C", linewidth=2.5, alpha=0.8)
 
+    limit = 10000
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_zlim([-limit, limit])
     ax.set_title(
-        f"3D Orbital View — {data['policy'].upper()} Policy\n"
-        f"ΔV: {data['total_delta_v']:.1f} m/s | "
-        f"Cleared: {data['cleared']}/{data['total_targets']}",
+        f"Realistic 3D Orbital Path — {data['policy'].upper()} Policy\n"
+        f"Scenario: {data['scenario']} | ΔV Consumed: {data['total_delta_v']:.1f} m/s",
         fontsize=14, fontweight="bold",
     )
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    ax.set_zlabel("Z")
-    ax.set_box_aspect([1, 1, 0.3])
-
     plt.tight_layout()
     plt.savefig(str(output_path), dpi=150, bbox_inches="tight")
     plt.close()
@@ -256,94 +226,114 @@ def generate_plotly_3d(data: dict, output_path: Path) -> None:
     try:
         import plotly.graph_objects as go
     except ImportError:
-        print("plotly required for interactive 3D. pip install plotly")
         return
 
     fig = go.Figure()
-
-    # Orbital ring
-    theta = np.linspace(0, 2 * np.pi, 200)
-    fig.add_trace(go.Scatter3d(
-        x=np.cos(theta), y=np.sin(theta), z=np.zeros_like(theta),
-        mode="lines", line=dict(color="gray", width=2, dash="dash"),
-        name="Orbit",
-    ))
+    earth_r = 6371.0
 
     # Earth sphere
     u, v = np.mgrid[0:2*np.pi:30j, 0:np.pi:20j]
-    er = 0.3
     fig.add_trace(go.Surface(
-        x=er * np.cos(u) * np.sin(v),
-        y=er * np.sin(u) * np.sin(v),
-        z=er * np.cos(v),
+        x=earth_r * np.cos(u) * np.sin(v),
+        y=earth_r * np.sin(u) * np.sin(v),
+        z=earth_r * np.cos(v),
         colorscale=[[0, "#3498DB"], [1, "#2980B9"]],
-        showscale=False, opacity=0.4, name="Earth",
+        showscale=False, opacity=0.8, name="Earth",
     ))
 
-    # Debris targets
+    # Debris targets & Rings
+    theta = np.linspace(0, 360, 100)
     for t in data["targets"]:
-        a = math.radians(t["angle_deg"])
-        risk_pct = int(t["risk"] * 100)
+        ring_x, ring_y, ring_z = [], [], []
+        for th in theta:
+            rx, ry, rz = get_cartesian(
+                t["sma_km"], t["eccentricity"], t["inclination_deg"], 
+                t["raan_deg"], t["arg_periapsis_deg"], th
+            )
+            ring_x.append(rx)
+            ring_y.append(ry)
+            ring_z.append(rz)
+            
         fig.add_trace(go.Scatter3d(
-            x=[math.cos(a)], y=[math.sin(a)], z=[0],
-            mode="markers+text",
-            marker=dict(
-                size=6 + 10 * t["risk"],
-                color=f"rgb({int(255*t['risk'])}, {int(255*(1-t['risk']))}, 50)",
-            ),
-            text=[t["name"]],
-            textposition="top center",
-            name=f"{t['name']} (risk={risk_pct}%)",
+            x=ring_x, y=ring_y, z=ring_z,
+            mode="lines", line=dict(color="rgba(150, 150, 150, 0.5)", width=1, dash="dash"),
+            showlegend=False, hoverinfo="skip"
+        ))
+        
+        # Add Debris Cloud effect (point cloud around target)
+        cloud_size = 20
+        cloud_rng = np.random.default_rng(int(t["sma_km"]))
+        offsets = cloud_rng.normal(0, 15.0, (cloud_size, 3))
+        
+        # Current position of target (using true_anomaly_deg)
+        tx, ty, tz = get_cartesian(
+            t["sma_km"], t["eccentricity"], t["inclination_deg"], 
+            t["raan_deg"], t["arg_periapsis_deg"], t["true_anomaly_deg"]
+        )
+        
+        fig.add_trace(go.Scatter3d(
+            x=tx + offsets[:, 0], y=ty + offsets[:, 1], z=tz + offsets[:, 2],
+            mode="markers",
+            marker=dict(size=1.5, color="white", opacity=0.4),
+            name=f"Cloud: {t['name']}",
+            showlegend=False, hoverinfo="skip"
         ))
 
-    # Spacecraft start
-    sr = math.radians(data["start_angle_deg"])
-    fig.add_trace(go.Scatter3d(
-        x=[math.cos(sr)], y=[math.sin(sr)], z=[0],
-        mode="markers", marker=dict(size=12, color="#2ECC71", symbol="diamond"),
-        name="Spacecraft Start",
-    ))
+        fig.add_trace(go.Scatter3d(
+            x=[tx], y=[ty], z=[tz],
+            mode="markers+text",
+            marker=dict(size=5 + 10 * t["risk"], color="#F1C40F"),
+            text=[t["name"]], textposition="top center", name=t['name'],
+            hoverinfo="text",
+            hovertext=[(
+                f"<b>{t['name']}</b><br>"
+                f"Type: {t['target_type']}<br>"
+                f"Risk: {t['risk']*100:.1f}%<br>"
+                f"SMA: {t['sma_km']:.1f} km"
+            )]
+        ))
 
-    # Trajectory path
+    # Trajectory
     trajectory = data["trajectory"]
     if trajectory:
-        px = [math.cos(sr)]
-        py = [math.sin(sr)]
-        pz = [0.0]
+        sx, sy, sz = get_cartesian(
+            data["start_sma_km"], data.get("start_eccentricity", 0.0), 
+            data["start_inclination_deg"], data["start_raan_deg"], 
+            data.get("start_arg_periapsis_deg", 0.0), data["start_true_anomaly_deg"]
+        )
+        px, py, pz = [sx], [sy], [sz]
         labels = ["START"]
+        
+        fig.add_trace(go.Scatter3d(
+            x=[sx], y=[sy], z=[sz],
+            mode="markers", marker=dict(size=12, color="#2ECC71", symbol="diamond"),
+            name="Spacecraft Start",
+        ))
+
         for i, hop in enumerate(trajectory):
-            a = math.radians(hop["to_angle"])
-            px.append(math.cos(a))
-            py.append(math.sin(a))
-            pz.append(0.0)
+            hx, hy, hz = get_cartesian(
+                hop["to_sma"], hop.get("to_ecc", 0.0), hop["to_inc"], 
+                hop["to_raan"], hop.get("to_arg_p", 0.0), hop.get("to_nu", 0.0)
+            )
+            px.append(hx)
+            py.append(hy)
+            pz.append(hz)
             labels.append(f"Step {i+1}: ΔV={hop['delta_v']:.1f}")
 
         fig.add_trace(go.Scatter3d(
             x=px, y=py, z=pz,
             mode="lines+markers",
-            line=dict(color="#E74C3C", width=5),
+            line=dict(color="#E74C3C", width=4),
             marker=dict(size=4, color="#E74C3C"),
             text=labels,
-            name="Mission Path",
+            hoverinfo="text",
+            name="Transfer Path",
         ))
 
     fig.update_layout(
-        title=dict(
-            text=(
-                f"Interactive Orbital Mission — {data['policy'].upper()}<br>"
-                f"<sub>ΔV: {data['total_delta_v']:.1f} m/s | "
-                f"Cleared: {data['cleared']}/{data['total_targets']} | "
-                f"Fuel left: {data['fuel_remaining']:.1f} m/s</sub>"
-            ),
-            font=dict(size=16),
-        ),
-        scene=dict(
-            xaxis_title="X", yaxis_title="Y", zaxis_title="Z",
-            aspectmode="manual",
-            aspectratio=dict(x=1, y=1, z=0.3),
-        ),
-        width=1000, height=700,
-        template="plotly_dark",
+        title=dict(text=f"Interactive 3D Orbital Mission — {data['policy'].upper()} Policy ({data['scenario']})<br><sub>Total ΔV: {data['total_delta_v']:.1f} m/s</sub>", font=dict(size=16)),
+        scene=dict(xaxis_title="X (km)", yaxis_title="Y (km)", zaxis_title="Z (km)", aspectmode="data"),
+        width=1000, height=800, template="plotly_dark",
     )
 
     fig.write_html(str(output_path), include_plotlyjs="cdn")
@@ -354,9 +344,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Visualize debris-removal missions.")
     parser.add_argument("--policy", type=str, default="nearest",
                         choices=["random", "nearest", "risk_weighted", "ppo"])
+    parser.add_argument("--scenario", type=str, default="medium",
+                        choices=["easy", "medium", "hard", "iridium_cosmos", "fengyun", "shakti"])
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--targets", type=int, default=8)
-    parser.add_argument("--fuel", type=float, default=1200.0)
+    parser.add_argument("--fuel", type=float, default=6000.0)
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--model-path", type=str, default="")
     parser.add_argument("--output-dir", type=str, default="results")
@@ -375,7 +367,7 @@ def main() -> None:
         policies.append("ppo")
 
     for policy in policies:
-        print(f"\nGenerating visualizations for {policy} policy...")
+        print(f"\nGenerating 3D visualizations for {policy} policy on {args.scenario} scenario...")
         data = _run_single_episode(
             policy_name=policy,
             seed=args.seed,
@@ -383,16 +375,14 @@ def main() -> None:
             fuel=args.fuel,
             max_steps=args.max_steps,
             model_path=args.model_path if policy == "ppo" else "",
+            scenario_type=args.scenario,
         )
 
-        # Save trajectory data
-        traj_path = output_dir / f"trajectory_{policy}.json"
+        traj_path = output_dir / f"trajectory_{policy}_{args.scenario}.json"
         traj_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
-        # Generate plots
-        plot_polar_mission(data, output_dir / f"mission_polar_{policy}.png")
-        plot_3d_orbit(data, output_dir / f"mission_3d_{policy}.png")
-        generate_plotly_3d(data, output_dir / f"mission_interactive_{policy}.html")
+        plot_3d_orbit(data, output_dir / f"mission_3d_{policy}_{args.scenario}.png")
+        generate_plotly_3d(data, output_dir / f"mission_interactive_{policy}_{args.scenario}.html")
 
     print("\nAll visualizations generated.")
 

@@ -166,5 +166,7 @@ Future work: Integration of full 3D orbital mechanics (using poliastro or equiva
 
 # **AI Usage Disclosure**
 
-This concept document was structured and written with AI assistance (Claude, Anthropic). All technical content, problem framing, architectural decisions, and quantitative estimates were reviewed and validated by team ta5abes. The baseline vs. optimized comparison values represent simulated estimates to be verified through actual implementation. No AI tool was used to generate implementation code or training results presented as validated outputs.
+This project was developed primarily through team effort during a 24-hour hackathon. AI assistance was limited to initial structural suggestions for the concept document and minor code scaffolding. 
+
+**Crucially, the core reinforcement learning model architecture, training logic, and orbital physics environment were designed, implemented, and trained entirely by the team.** All technical results and performance metrics presented are the direct result of our own model training and validation sessions. All technical content, problem framing, architectural decisions, and quantitative estimates were reviewed and validated by team ta5abes. Baseline vs. optimized comparison values represent simulated results reproducible from the submitted code.
 

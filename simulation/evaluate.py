@@ -21,10 +21,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--episodes", type=int, default=100)
     parser.add_argument("--targets", type=int, default=8)
-    parser.add_argument("--fuel", type=float, default=1200.0)
+    parser.add_argument("--fuel", type=float, default=6000.0)
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--model-path", type=str, default="")
+    parser.add_argument(
+        "--scenario", type=str, default="medium",
+        help="Scenario preset name or path to Celestrak JSON file."
+    )
     parser.add_argument(
         "--output", type=str, default=r"results\evaluation_summary.json"
     )
@@ -39,6 +43,7 @@ def run_policy(
     fuel: float,
     max_steps: int,
     model_path: str = "",
+    scenario_generator: callable | None = None,
 ) -> dict[str, object]:
     """Run *episodes* rollouts of a named policy and return aggregate metrics."""
     rng = np.random.default_rng(seed)
@@ -61,6 +66,7 @@ def run_policy(
 
     for i in range(episodes):
         env = OrbitDebrisEnv(
+            scenario_generator=scenario_generator,
             seed=seed + i,
             target_count=targets,
             fuel_budget=fuel,
@@ -120,6 +126,15 @@ def main() -> None:
     args = parse_args()
     results: dict[str, dict] = {}
 
+    import functools
+    from .scenario import SCENARIO_PRESETS, from_celestrak_json
+    
+    scenario_path = Path(args.scenario)
+    if scenario_path.exists() and scenario_path.suffix.lower() == '.json':
+        scenario_generator = functools.partial(from_celestrak_json, filepath=scenario_path)
+    else:
+        scenario_generator = SCENARIO_PRESETS.get(args.scenario, SCENARIO_PRESETS["medium"])
+
     for idx, name in enumerate(POLICY_NAMES):
         print(f"Evaluating {name} policy ({args.episodes} episodes)...")
         results[name] = run_policy(
@@ -129,6 +144,7 @@ def main() -> None:
             targets=args.targets,
             fuel=args.fuel,
             max_steps=args.max_steps,
+            scenario_generator=scenario_generator,
         )
 
     if args.model_path:
@@ -141,6 +157,7 @@ def main() -> None:
             fuel=args.fuel,
             max_steps=args.max_steps,
             model_path=args.model_path,
+            scenario_generator=scenario_generator,
         )
 
     # Print comparison table
