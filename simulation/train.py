@@ -50,6 +50,8 @@ def main() -> None:
         from sb3_contrib.common.wrappers import ActionMasker
         from stable_baselines3.common.callbacks import EvalCallback
         from stable_baselines3.common.monitor import Monitor
+        from stable_baselines3.common.vec_env import SubprocVecEnv
+        from stable_baselines3.common.utils import set_random_seed
     except ImportError as exc:
         raise ImportError(
             "sb3-contrib and stable-baselines3 are required for training. "
@@ -67,18 +69,27 @@ def main() -> None:
     else:
         scenario_generator = SCENARIO_PRESETS.get(args.scenario, SCENARIO_PRESETS["medium"])
 
-    # Training environment: ActionMasker first, then Monitor
-    raw_train_env = OrbitDebrisEnv(
-        scenario_generator=scenario_generator,
-        seed=args.seed,
-        target_count=args.targets,
-        fuel_budget=args.fuel,
-        max_steps=args.max_steps,
-    )
-    masked_train_env = ActionMasker(raw_train_env, mask_fn)
-    train_env = Monitor(masked_train_env)
+    def make_env(rank: int, seed: int = 0):
+        """Helper to create a single environment instance."""
+        def _init():
+            env = OrbitDebrisEnv(
+                scenario_generator=scenario_generator,
+                seed=seed + rank,
+                target_count=args.targets,
+                fuel_budget=args.fuel,
+                max_steps=args.max_steps,
+            )
+            env = ActionMasker(env, mask_fn)
+            env = Monitor(env)
+            return env
+        set_random_seed(seed)
+        return _init
 
-    # Separate eval environment (also needs action masking)
+    # Parallel environments (Vectorized)
+    num_cpu = 8  # Increased for speed
+    train_env = SubprocVecEnv([make_env(i, args.seed) for i in range(num_cpu)])
+
+    # Separate eval environment
     raw_eval_env = OrbitDebrisEnv(
         scenario_generator=scenario_generator,
         seed=args.seed + 999,
@@ -100,14 +111,12 @@ def main() -> None:
         eval_env,
         best_model_save_path=str((output_path.parent / "best_model").resolve()),
         log_path=str((output_path.parent / "eval_logs").resolve()),
-        eval_freq=2048,
+        eval_freq=max(1000, 10000 // num_cpu), # Adjusted for parallel envs
         n_eval_episodes=10,
         deterministic=True,
         verbose=1,
     )
 
-    # TensorBoard disabled — TensorFlow cannot handle Unicode paths.
-    # Training metrics are captured by EpisodeMetricsCallback instead.
     tb_log = None
 
     if args.load_model:
@@ -125,7 +134,7 @@ def main() -> None:
             verbose=1,
             learning_rate=linear_schedule(3e-4),
             n_steps=2048,
-            batch_size=64,
+            batch_size=256, # Increased for GPU speed
             n_epochs=10,
             gamma=0.99,
             gae_lambda=0.95,

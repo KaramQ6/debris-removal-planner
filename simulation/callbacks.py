@@ -24,10 +24,31 @@ class EpisodeMetricsCallback(BaseCallback):
     ) -> None:
         super().__init__(verbose)
         self._output_path = Path(output_path)
-        self._episode_rewards: list[float] = []
-        self._episode_lengths: list[int] = []
-        self._episode_delta_vs: list[float] = []
-        self._episode_cleared: list[int] = []
+        
+        # Load existing history if file exists
+        if self._output_path.exists():
+            try:
+                with open(self._output_path, "r", encoding="utf-8") as f:
+                    history = json.load(f)
+                self._episode_rewards = history.get("episode_rewards", [])
+                self._episode_lengths = history.get("episode_lengths", [])
+                self._episode_delta_vs = history.get("episode_delta_vs", [])
+                self._episode_cleared = history.get("episode_cleared", [])
+                if verbose:
+                    print(f"Loaded existing history from {self._output_path} ({len(self._episode_rewards)} episodes)")
+            except (json.JSONDecodeError, IOError):
+                if verbose:
+                    print(f"Warning: Could not load existing history from {self._output_path}. Starting fresh.")
+                self._episode_rewards = []
+                self._episode_lengths = []
+                self._episode_delta_vs = []
+                self._episode_cleared = []
+        else:
+            self._episode_rewards = []
+            self._episode_lengths = []
+            self._episode_delta_vs = []
+            self._episode_cleared = []
+            
         self._current_rewards: dict[int, float] = {}
 
     def _on_step(self) -> bool:
