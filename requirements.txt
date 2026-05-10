@@ -1,4 +1,15 @@
+# Core simulation
 numpy>=1.26
 gymnasium>=0.29
+
+# RL training
 stable-baselines3>=2.3
+sb3-contrib>=2.3
 torch>=2.2
+
+# Visualization & charting
+matplotlib>=3.8
+plotly>=5.18
+
+# Training monitoring
+tensorboard>=2.16
