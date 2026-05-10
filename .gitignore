@@ -50,3 +50,7 @@ desktop.ini
 # Project specific
 Chat*.md
 ta5abes_DebrisPlanner_Phase1_ConceptDocument.md
+ppt_dump.txt
+tools/inspect_text.py
+Template presentation.pptx
+text_dump.json

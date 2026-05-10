@@ -150,7 +150,12 @@ def default_scenario(
     )
 
 
-def fengyun_scenario(seed: int | None = None, target_count: int = 8) -> MissionScenario:
+def fengyun_scenario(
+    seed: int | None = None,
+    target_count: int = 8,
+    fuel_budget: float = 7000.0,
+    max_steps: int = 50,
+) -> MissionScenario:
     """Fengyun-1C ASAT event (2007). Altitude 850km, Sun-synchronous (98.8 deg)."""
     rng = np.random.default_rng(seed)
     cloud = _generate_cloud(
@@ -168,14 +173,19 @@ def fengyun_scenario(seed: int | None = None, target_count: int = 8) -> MissionS
                           t.age_days, t.risk, t.name) for i, t in enumerate(cloud)]
 
     return MissionScenario(
-        targets=tuple(cloud), fuel_budget=7000.0, max_steps=50,
+        targets=tuple(cloud), fuel_budget=fuel_budget, max_steps=max_steps,
         start_sma_km=7221.0, start_eccentricity=0.0, start_inclination_deg=98.8,
         start_raan_deg=float(rng.uniform(0, 360)), start_arg_periapsis_deg=0.0, start_true_anomaly_deg=0.0,
         name=f"fengyun_{target_count}t"
     )
 
 
-def mission_shakti_scenario(seed: int | None = None, target_count: int = 8) -> MissionScenario:
+def mission_shakti_scenario(
+    seed: int | None = None,
+    target_count: int = 8,
+    fuel_budget: float = 8000.0,
+    max_steps: int = 60,
+) -> MissionScenario:
     """Mission Shakti (2019). Highly eccentric orbits due to velocity kicks."""
     rng = np.random.default_rng(seed)
     # Target was 283km (SMA 6654 circular). Kicks pushed apogee to ~1730km (SMA = 7377, ecc = ~0.1)
@@ -190,7 +200,7 @@ def mission_shakti_scenario(seed: int | None = None, target_count: int = 8) -> M
                           t.age_days, t.risk, t.name) for i, t in enumerate(cloud)]
 
     return MissionScenario(
-        targets=tuple(cloud), fuel_budget=8000.0, max_steps=60,
+        targets=tuple(cloud), fuel_budget=fuel_budget, max_steps=max_steps,
         start_sma_km=6654.0, start_eccentricity=0.0, start_inclination_deg=28.2,
         start_raan_deg=float(rng.uniform(0, 360)), start_arg_periapsis_deg=0.0, start_true_anomaly_deg=0.0,
         name=f"mission_shakti_{target_count}t"
@@ -200,7 +210,13 @@ def mission_shakti_scenario(seed: int | None = None, target_count: int = 8) -> M
 import json
 from pathlib import Path
 
-def from_celestrak_json(filepath: Path | str, target_count: int = 12, seed: int | None = None) -> MissionScenario:
+def from_celestrak_json(
+    filepath: Path | str,
+    target_count: int = 12,
+    seed: int | None = None,
+    fuel_budget: float = 8000.0,
+    max_steps: int = 50,
+) -> MissionScenario:
     """Load orbital parameters from Celestrak JSON format."""
     rng = np.random.default_rng(seed)
     with open(filepath, "r", encoding="utf-8") as f:
@@ -245,20 +261,35 @@ def from_celestrak_json(filepath: Path | str, target_count: int = 12, seed: int 
     start_nu = 0.0
     
     return MissionScenario(
-        targets=tuple(targets), fuel_budget=8000.0, max_steps=50,
+        targets=tuple(targets), fuel_budget=fuel_budget, max_steps=max_steps,
         start_sma_km=start_sma, start_eccentricity=0.0, start_inclination_deg=start_inc,
         start_raan_deg=start_raan, start_arg_periapsis_deg=start_arg_p, start_true_anomaly_deg=start_nu,
         name=f"json_custom_{len(targets)}t"
     )
 
-def easy_scenario(seed: int | None = None) -> MissionScenario:
-    return default_scenario(target_count=5, fuel_budget=8000.0, max_steps=30, seed=seed)
+def easy_scenario(
+    seed: int | None = None,
+    target_count: int = 5,
+    fuel_budget: float = 8000.0,
+    max_steps: int = 30,
+) -> MissionScenario:
+    return default_scenario(target_count=target_count, fuel_budget=fuel_budget, max_steps=max_steps, seed=seed)
 
-def medium_scenario(seed: int | None = None) -> MissionScenario:
-    return fengyun_scenario(seed=seed, target_count=8)
+def medium_scenario(
+    seed: int | None = None,
+    target_count: int = 8,
+    fuel_budget: float = 7000.0,
+    max_steps: int = 50,
+) -> MissionScenario:
+    return fengyun_scenario(seed=seed, target_count=target_count, fuel_budget=fuel_budget, max_steps=max_steps)
 
-def hard_scenario(seed: int | None = None) -> MissionScenario:
-    return mission_shakti_scenario(seed=seed, target_count=12)
+def hard_scenario(
+    seed: int | None = None,
+    target_count: int = 12,
+    fuel_budget: float = 8000.0,
+    max_steps: int = 60,
+) -> MissionScenario:
+    return mission_shakti_scenario(seed=seed, target_count=target_count, fuel_budget=fuel_budget, max_steps=max_steps)
 
 SCENARIO_PRESETS: dict[str, type[MissionScenario] | callable] = {
     "easy": easy_scenario,
