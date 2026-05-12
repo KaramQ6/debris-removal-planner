@@ -13,3 +13,6 @@ plotly>=5.18
 
 # Training monitoring
 tensorboard>=2.16
+
+# Testing
+pytest>=7.0

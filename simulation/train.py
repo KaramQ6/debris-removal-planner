@@ -10,14 +10,14 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Train MaskablePPO on debris-removal environment."
     )
-    parser.add_argument("--timesteps", type=int, default=1_000_000)
+    parser.add_argument("--timesteps", type=int, default=1_500_000)
     parser.add_argument("--targets", type=int, default=8)
-    parser.add_argument("--fuel", type=float, default=6000.0)
+    parser.add_argument("--fuel", type=float, default=12000.0)
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument(
-        "--scenario", type=str, default="medium",
-        help="Scenario preset name (easy, medium, hard, shakti, etc.) or path to Celestrak JSON file."
+        "--scenario", type=str, default="curriculum",
+        help="Scenario preset name (easy, medium, hard, shakti, curriculum) or path to Celestrak JSON file."
     )
     parser.add_argument(
         "--output", type=str, default=r"results\models\ppo_debris"
@@ -48,7 +48,7 @@ def main() -> None:
     try:
         from sb3_contrib import MaskablePPO
         from sb3_contrib.common.wrappers import ActionMasker
-        from stable_baselines3.common.callbacks import EvalCallback
+        from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
         from stable_baselines3.common.monitor import Monitor
         from stable_baselines3.common.vec_env import SubprocVecEnv
         from stable_baselines3.common.utils import set_random_seed
@@ -85,8 +85,10 @@ def main() -> None:
         set_random_seed(seed)
         return _init
 
-    # Parallel environments (Vectorized)
-    num_cpu = 8  # Increased for speed
+    # Parallel environments. 4 keeps RAM usage well under 1 GiB while still
+    # delivering ~900 fps on a modern GPU — bumping higher previously caused
+    # transient allocator failures on Windows.
+    num_cpu = 8
     train_env = SubprocVecEnv([make_env(i, args.seed) for i in range(num_cpu)])
 
     # Separate eval environment
@@ -111,10 +113,18 @@ def main() -> None:
         eval_env,
         best_model_save_path=str((output_path.parent / "best_model").resolve()),
         log_path=str((output_path.parent / "eval_logs").resolve()),
-        eval_freq=max(1000, 10000 // num_cpu), # Adjusted for parallel envs
+        eval_freq=max(1000, 10000 // num_cpu),
         n_eval_episodes=10,
         deterministic=True,
         verbose=1,
+    )
+    # EvalCallback in SB3 does not forward action masks during predict(), so
+    # its "best_model" can mis-rank checkpoints. Independent periodic snapshots
+    # let us pick the true late-training policy after the run.
+    checkpoint_cb = CheckpointCallback(
+        save_freq=max(1, 50_000 // num_cpu),
+        save_path=str((output_path.parent / "checkpoints").resolve()),
+        name_prefix="ppo_ckpt",
     )
 
     tb_log = None
@@ -155,7 +165,7 @@ def main() -> None:
 
     model.learn(
         total_timesteps=args.timesteps,
-        callback=[metrics_cb, eval_cb],
+        callback=[metrics_cb, eval_cb, checkpoint_cb],
         progress_bar=True,
     )
     model.save(str(output_path))

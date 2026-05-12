@@ -164,12 +164,8 @@ def fengyun_scenario(
         sma_var=20.0, ecc_var=0.01, inc_var=0.2,
         types=["FRAG"], prefix="FY1C"
     )
-    for i, t in enumerate(cloud):
-        cloud[i] = object.__setattr__(t, 'target_id', i) or t
-        
-    # Python dataclass frozen hack, but safer to recreate:
-    cloud = [DebrisTarget(i, t.sma_km, t.eccentricity, t.inclination_deg, t.raan_deg, 
-                          t.arg_periapsis_deg, t.true_anomaly_deg, t.target_type, 
+    cloud = [DebrisTarget(i, t.sma_km, t.eccentricity, t.inclination_deg, t.raan_deg,
+                          t.arg_periapsis_deg, t.true_anomaly_deg, t.target_type,
                           t.age_days, t.risk, t.name) for i, t in enumerate(cloud)]
 
     return MissionScenario(
@@ -210,6 +206,8 @@ def mission_shakti_scenario(
 import json
 from pathlib import Path
 
+_CELESTRAK_CACHE = {}
+
 def from_celestrak_json(
     filepath: Path | str,
     target_count: int = 12,
@@ -218,9 +216,15 @@ def from_celestrak_json(
     max_steps: int = 50,
 ) -> MissionScenario:
     """Load orbital parameters from Celestrak JSON format."""
+    global _CELESTRAK_CACHE
     rng = np.random.default_rng(seed)
-    with open(filepath, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    
+    path_key = str(filepath)
+    if path_key not in _CELESTRAK_CACHE:
+        with open(filepath, "r", encoding="utf-8") as f:
+            _CELESTRAK_CACHE[path_key] = json.load(f)
+    
+    data = _CELESTRAK_CACHE[path_key]
     
     # Shuffle data to get random targets each time
     indices = rng.permutation(len(data))
@@ -291,10 +295,35 @@ def hard_scenario(
 ) -> MissionScenario:
     return mission_shakti_scenario(seed=seed, target_count=target_count, fuel_budget=fuel_budget, max_steps=max_steps)
 
+
+def curriculum_scenario(
+    seed: int | None = None,
+    target_count: int = 8,
+    fuel_budget: float = 12000.0,
+    max_steps: int = 50,
+) -> MissionScenario:
+    """Stochastic curriculum: 50% easy, 30% medium, 20% hard per episode.
+
+    The seed deterministically picks the difficulty so that VecEnv workers
+    stay reproducible while still exposing the policy to all three regimes.
+    """
+    rng = np.random.default_rng(seed)
+    r = rng.random()
+    if r < 0.5:
+        return easy_scenario(seed=seed, target_count=min(target_count, 5),
+                             fuel_budget=fuel_budget, max_steps=max_steps)
+    if r < 0.8:
+        return medium_scenario(seed=seed, target_count=target_count,
+                               fuel_budget=fuel_budget, max_steps=max_steps)
+    return hard_scenario(seed=seed, target_count=target_count,
+                         fuel_budget=fuel_budget, max_steps=max_steps)
+
+
 SCENARIO_PRESETS: dict[str, type[MissionScenario] | callable] = {
     "easy": easy_scenario,
     "medium": medium_scenario,
     "hard": hard_scenario,
+    "curriculum": curriculum_scenario,
     "iridium_cosmos": default_scenario,
     "fengyun": fengyun_scenario,
     "shakti": mission_shakti_scenario,

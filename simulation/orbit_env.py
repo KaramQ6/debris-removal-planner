@@ -99,10 +99,6 @@ class OrbitDebrisEnv(gym.Env[np.ndarray, int]):
             self.np_random, _ = gym.utils.seeding.np_random(seed)
 
         new_seed = int(self.np_random.integers(0, 2**31))
-        new_seed = int(self.np_random.integers(0, 2**31))
-        # Remove unsupported kwargs if necessary, but we assume generators accept these or kwargs.
-        # Actually from_celestrak_json doesn't accept fuel_budget and max_steps, it hardcodes them.
-        # Let's wrap scenario_generator call safely
         try:
             self._scenario = self._scenario_generator(
                 target_count=self._target_count,
@@ -207,31 +203,35 @@ class OrbitDebrisEnv(gym.Env[np.ndarray, int]):
             delta_v = self.delta_v_to_target(action)
 
             if delta_v > self._fuel_remaining:
-                reward -= 20.0
+                # Smaller penalty: encourage exploration of expensive transfers
+                # without panic-collapsing the policy.
+                reward -= 5.0
                 terminated = True
                 self._fuel_remaining = 0.0
             else:
                 self._fuel_remaining -= delta_v
-                
+
                 prev_sma = self._sp_sma
                 prev_ecc = self._sp_ecc
                 prev_inc = self._sp_inc
                 prev_raan = self._sp_raan
                 prev_arg_p = self._sp_arg_p
-                
+
                 self._sp_sma = target.sma_km
                 self._sp_ecc = target.eccentricity
                 self._sp_inc = target.inclination_deg
                 self._sp_raan = target.raan_deg
                 self._sp_arg_p = target.arg_periapsis_deg
                 self._sp_nu = target.true_anomaly_deg
-                
+
                 self._active[action] = False
                 self._total_delta_v += delta_v
                 self._cleared += 1
 
-                # Reward: heavily weight the risk (derived from LEGEND) vs fuel cost
-                reward += 10.0 + (20.0 * target.risk) - 0.005 * delta_v
+                # Stronger clear bonus (justifies expensive plane-changes in
+                # high-inclination clusters) + LEGEND risk weighting.
+                # Fuel cost scaled so a max-budget burn (~12000 m/s) costs ~12.
+                reward += 25.0 + 30.0 * target.risk - 0.001 * delta_v
 
                 self._trajectory.append(
                     {
@@ -256,9 +256,9 @@ class OrbitDebrisEnv(gym.Env[np.ndarray, int]):
 
         if self._cleared == len(self._targets):
             terminated = True
-            reward += 15.0
+            reward += 50.0
             fuel_fraction = self._fuel_remaining / self._scenario.fuel_budget
-            reward += 10.0 * fuel_fraction
+            reward += 30.0 * fuel_fraction
 
         if self._fuel_remaining <= 0.0:
             terminated = True
