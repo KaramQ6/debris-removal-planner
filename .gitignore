@@ -34,6 +34,9 @@ htmlcov/
 results/tb_logs/
 results/models/
 
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
 # Media and temporary artifacts
 media_*.png
 *.log
@@ -47,6 +50,13 @@ media_*.png
 Thumbs.db
 desktop.ini
 
+# Archived chat logs and dev artifacts
+archive/
+Finalizing*.md
+Executing*.md
+cached-*.md
+scratch/
+
 # Project specific
 Chat*.md
 ta5abes_DebrisPlanner_Phase1_ConceptDocument.md
@@ -54,3 +64,4 @@ ppt_dump.txt
 tools/inspect_text.py
 Template presentation.pptx
 text_dump.json
+.claude/settings.json
