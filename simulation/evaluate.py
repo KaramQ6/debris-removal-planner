@@ -107,14 +107,60 @@ def run_policy(
         if i < 3:
             sample_trajectories.append(info.get("trajectory", []))
 
+    # Calculate advanced metrics
+    avg_cleared = float(np.mean(all_cleared))
+    total_targets = targets
+    accuracy = avg_cleared / total_targets
+
+    # Precision/Recall/F1: Operational tracking metrics (not strict ML classification)
+    # In this RL task, every target collected = True Positive, every missed = False Negative.
+    # Note: Precision is fixed at 1.0 because the problem has no False Positives
+    # (agent can't "hallucinate" debris; it only collects real targets).
+    # F1 = Recall in this context, so these are best interpreted as task performance signals.
+    tp = sum(all_cleared)
+    fn = episodes * targets - tp
+    precision = 1.0 if tp + fn == 0 else tp / (tp + 0)
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+    f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+
+    # Completion rates: percentage of episodes reaching target thresholds
+    completion_rate = sum(1 for c in all_cleared if c >= 1) / episodes
+    full_completion_rate = sum(1 for c in all_cleared if c == total_targets) / episodes
+
+    # Fuel efficiency: ΔV per target cleared (only for episodes where targets were cleared)
+    cleared_episodes = [c for c in all_cleared if c > 0]
+    dv_for_cleared = [all_delta_v[i] for i, c in enumerate(all_cleared) if c > 0]
+    fuel_per_target = (
+        float(np.mean([dv / c for dv, c in zip(dv_for_cleared, cleared_episodes)]))
+        if len(cleared_episodes) > 0 else float('inf')
+    )
+
+    # Regression metrics for fuel usage (Actual vs Idealized Budget)
+    # Note: MAE/MSE/RMSE will often be near 0 if agent consumes the full budget
+    fuel_usage = [fuel - r for r in all_fuel_remaining]
+    y_true = [fuel] * episodes
+    mae = float(np.mean(np.abs(np.array(y_true) - np.array(fuel_usage))))
+    mse = float(np.mean((np.array(y_true) - np.array(fuel_usage))**2))
+    rmse = float(np.sqrt(mse))
+
     return {
         "avg_delta_v": float(np.mean(all_delta_v)),
         "std_delta_v": float(np.std(all_delta_v)),
         "min_delta_v": float(np.min(all_delta_v)),
         "max_delta_v": float(np.max(all_delta_v)),
-        "avg_cleared": float(np.mean(all_cleared)),
+        "avg_cleared": avg_cleared,
         "avg_fuel_remaining": float(np.mean(all_fuel_remaining)),
         "full_clear_rate": full_clear_count / episodes,
+        "completion_rate": completion_rate,
+        "full_completion_rate": full_completion_rate,
+        "fuel_per_target": fuel_per_target,
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "mae": mae,
+        "mse": mse,
+        "rmse": rmse,
         "episodes": episodes,
         "all_delta_v": all_delta_v,
         "all_cleared": [int(c) for c in all_cleared],
@@ -163,15 +209,14 @@ def main() -> None:
     # Print comparison table
     print()
     print(
-        f"{'Policy':<18} {'Avg Delta-V (m/s)':>14} {'Std Delta-V':>10} "
-        f"{'Avg Cleared':>12} {'Full-Clear':>12} {'Avg Fuel Left':>14}"
+        f"{'Policy':<15} {'Delta-V':>10} {'Cleared':>8} {'Acc %':>7} {'F1':>6} {'RMSE':>8} {'Fuel Left':>10}"
     )
-    print("-" * 82)
+    print("-" * 70)
     for name, m in results.items():
         print(
-            f"{name:<18} {m['avg_delta_v']:>14.2f} {m['std_delta_v']:>10.2f} "
-            f"{m['avg_cleared']:>12.2f} {100.0 * m['full_clear_rate']:>11.1f}% "
-            f"{m['avg_fuel_remaining']:>14.2f}"
+            f"{name:<15} {m['avg_delta_v']:>10.1f} {m['avg_cleared']:>8.2f} "
+            f"{100.0 * m['accuracy']:>6.1f}% {m['f1_score']:>6.2f} {m['rmse']:>8.1f} "
+            f"{m['avg_fuel_remaining']:>10.1f}"
         )
 
     # Improvement metrics
