@@ -1,0 +1,116 @@
+--- PAGE 1 ---
+8th IEEE Jordan Conference on Applied Electrical Engineering 
+and Computing Technologies (AEECT 2026) 
+(IEEE Conference record number: 69724) 
+28th – 30th July, 2026, Amman, Jordan 
+http://aeect.net/ 
+AEECT 2026 is the 8th Conference that IEEE Jordan Section organizes. This IEEE-listed conference provides a unique forum to discuss practical approaches 
+and state of the art findings pertinent to applied electrical engineering and computing technology. AEECT 2026 program includes keynote addresses, panel 
+discussions, paper presentations, exhibitions, and workshops. All papers will be peer reviewed by at least three reviewers based on full paper submission. 
+The accepted papers will be published in the conference proceedings. Accepted papers will also be submitted for possible inclusion into IEEE Xplore subject 
+to meet IEEE Xplore’s scope and quality requirements and indexed in SCOPUS. 
+ 
+Steering Committee 
+Prof. Ala’ Khalifeh, General Chair 
+Dr. Khaled Jaber, Co-Chair 
+Dr. Mousa Al-Akhras, IEEE JS Chair 
+ 
+International Advisory Committee 
+Prof. Ljubo Vlacic, GU, Australia 
+Prof. Haiping Du, UOW, Australia 
+Prof. Cajetan Akujuobi, PVAMU, USA 
+Prof. Ikhlas Abdel-Qader, WMICH, USA 
+Prof. Mihaela Albu, UPB, Romania 
+ 
+TPC Chair 
+Prof. Iyad Jafar 
+ 
+Sponsorship committee 
+Prof. Ala’ Khalifeh (Chair)  
+Eng. Mohammad Alqasem 
+ 
+Financial Committee 
+Prof. Abdullah Qusef 
+Moe'en Azar 
+ 
+Publicity Committee  
+Dr. Mohammad Al-
+Othman  
+Prof. Mohammad Salah 
+Prof. Abadallah Qusef 
+Dr. Sokyna Alqatawneh 
+Dr. Malak Abdullah 
+    Dr. Isam Trad  
+    Dr. Mohammad Abduallah 
+    Dr. Khalil Yousef 
+    Shahed Al-Khatib 
+ 
+Logistics and Coordination 
+Eng. Nasiradeen Abuawwad (Chair) 
+Eng. Mustafa Aqrabawe 
+ 
+Students’ Volunteers Coordinator 
+Majd Zarqan 
+Publication Chair 
+Dr. Khaled Jaber 
+CFP Track Chairs and Main Topics 
+Technical Program Committee Chair: Prof. Iyad Jafar 
+Sustainable Energy/Power Systems and Smart Grids: renewable energy integration, electrification of heat and  
+transport, optimal use of energy resources, active network management, energy storage, demand response,  
+virtual power plants, energy management, power electronics, data analytics, forecasting, energy markets, peer- 
+to-peer trading, power system analysis, dynamics, stability, control, electromagnetic transients, power quality, 
+protection, automation, wide-area monitoring, HVDC transmission, grounding systems, and resilience. 
+Track Chair: Dr. Khaled Alzaareer 
+Electronics Engineering and Nano Technology: analog and digital electronics, embedded systems, VLSI design,  
+mixed-signal circuits, MEMS and NEMS devices, nanoelectronics systems, semiconductor devices, nano - 
+materials and fabrication techniques, nano -sensors and actuators, flexible and wearable electronics, RF and  
+microwave circuits, optoelectronics, quantum electronics, photonic devices, and nanoscale modeling and  
+simulation. Contributions exploring applications in healthcare, energy, communication, and computing are also 
+encouraged. 
+Track Chair: Prof. Fadi Shahrouri 
+Communications, Signal Processing, and Computer Networks: 5G and beyond, massive MIMO, cognitive radios, 
+machine learning for communications, power line and green communications, optical, satellite, and aerospace 
+communication systems, signal processing, NOMA, wireless IoT, WSN, ad -hoc networks, satellite navigat ion 
+systems, GNSS/GPS technologies and solutions. The track also covers software -defined networks, content 
+delivery, multimedia systems, QoS, network protocols, deterministic and time -sensitive netw orking, and 
+container networking. Additional areas include cyber -physical systems, Industry 4.0, IoT applications, cloud 
+computing, mobile computing, distributed systems, high -performance computing, software engineering, 
+databases, algorithms, digital transformation, health informatics, and computer graphics. 
+Track Chair: Dr. Luae' Al-Tarawneh 
+Biomedical Engineering: biomedical signal and image processing, biomedical instrumentation, biomedical systems 
+modeling, biomedical electronic circuits and systems, biomechanics, artificial organs and prosthesis,  
+rehabilitation and therapeutic systems, biomaterials and tissue engineering, biomedical and health informatics, 
+clinical engineering, biomedical monitoring, neuro-engineering, and smart biomedical sensors. The track aims  
+to showcase cutting -edge research that bridges engineering and healthcare, supporting the development of  
+technologies that improve diagnosis, treatment, patient care, and overall health outcomes. 
+Track Chair: Dr. Hisham ElMoaqet 
+Control, Robotics, and Mechatronics: control methods and systems, automation and instrumentation, modeling  
+and simulation, mechatronic system design, system identification, robotics, manufacturing methods,  
+automotive and autonomous systems, navigation, mapping and localization, intelligent systems, sensor  
+technology, sensor fusion, and design and optimization. The track aims to showcase innovative approaches that 
+enhance system performance, autonomy, adaptability, and intelligence across a range of applications in modern 
+engineering and industrial systems. 
+Track Chair: Dr. Mutaz Ryalat 
+Data Science and Artificial Intelligence: big data, data analytics, predictive analytics, data mining, natural language 
+processing (NLP), data science management, data wrangling, machine learning, search algorithms and swarm  
+intelligence, bioinformatics, and AI responses to the pandemics. The track aims to highlight innovative methods, 
+tools, and frameworks that leverage data -driven insights and intelligent systems to solve complex problems  
+across various domains. 
+Track Chair: Dr. Mohammad Abdel-Majeed 
+Cybersecurity: network security, digital forensics, incident response, malware analysis, mobile security, big data  
+security, trust computing, data security and privacy, data hiding and anti -forensics, cloud computing security, 
+threat intelligence, threat hunting, machine learning applications in cybersecurity, IoT security, cryptography,  
+information security, cyber threats, and blockchain security. The track aims to explore innovative strategies,  
+technologies, and frameworks for securing digital infrastructure, protecting  sensitive data, and enhancing  
+resilience against emerging cyber threats. 
+Track Chair: Prof. Iman AlMomani 
+Important Dates   
+ 
+Paper Submission Deadline May 31 2026 (Extended 
+deadline) 
+Review Decision Notification June 20, 2026 
+Final Submission June 25, 2026 
+Author Registration June 25, 2026 
+Attendee Registration July 10, 2026 
+E-Mail: ala.khalifeh@gju.edu.jo Website: http://aeect.net/ 
+ 

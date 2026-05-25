@@ -1,0 +1,159 @@
+[
+  {
+    "id": "1207.3749v1",
+    "url": "http://arxiv.org/abs/1207.3749v1",
+    "title": "Preliminary Design of Debris Removal Missions by Means of Simplified Models for Low-Thrust, Many-Revolution Transfers",
+    "summary": "This paper presents a novel approach for the preliminary design of Low-Thrust, many-revolution transfers. The main feature of the novel approach is a considerable reduction in the control parameters and a consequent gain in computational speed. Each spiral is built by using a predefined pattern for thrust direction and switching structure. The pattern is then optimised to minimise propellant consumption and transfer time. The variation of the orbital elements due to the thrust is computed analytically from a first-order solution of the perturbed Keplerian motion. The proposed approach allows for a realistic estimation of ΔV and time of flight required to transfer a spacecraft between two arbitrary orbits. Eccentricity and plane changes are both accounted for. The novel approach is applied here to the design of missions for the removal of space debris by means of an Ion Beam Shepherd Spacecraft. In particular, two slightly different variants of the proposed low-thrust control model are used for the different phases of the mission. Thanks to their low computational cost they can be included in a multiobjective optimisation problem in which the sequence and timing of the removal of five pieces of debris are optimised to minimise propellant consumption and mission duration.",
+    "published": "2012-06-29T10:08:58Z",
+    "authors": [
+      "Federico Zuiani",
+      "Massimiliano Vasile"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/1207.3749v1",
+    "doi": "10.1155/2012/836250"
+  },
+  {
+    "id": "2204.00674v1",
+    "url": "http://arxiv.org/abs/2204.00674v1",
+    "title": "Design of Low Thrust Controlled Maneuvers to Chase and De-orbit the Space Debris",
+    "summary": "Over the several decades, the space debris at LEO has grown rapidly which had caused a serious threat to the operating satellite in an orbit. To avoid the risk of collision and protect the LEO environment, the space robotics ADR concept has been continuously developed for over a decade to chase, capture, and deorbit space debris. This paper presents the designed small satellite with dual robotic manipulators. The small satellite is designed based on CubeSat standards, which uses commercially available products in the market. In this paper, an approach is detailed for designing the controlled chase and deorbit maneuver for a small satellite equipped with an RCS thruster. The maneuvers are comprised of two phases, a. bringing the chaser satellite to the debris orbit and accelerating it to close proximity of 1m to the debris object by using the low thrust RCS thruster, and b. Once captured, controlled deorbiting it to 250 km of altitude. A Hohmann transfer concept is used to move our chaser satellite from the lower orbit to the debris orbit by two impulsive burns. A number of the scenarios are simulated, where one or more orbital elements are adjusted. For more than one orbital elements adjustment, the DAG law and the Q law are utilized. These laws synthesize the three direction thrusts to the single thrust force for the controlled maneuver. The $Δ$V requirement at each maneuver is determined by using the performance parameters of the RCS thruster intended for a small satellite. The results show that, for long term simulation of a chaser satellite maneuver to debris object, an optimum DAG law is most suitable than the Q law, as it can handle the singularity behavior of the orbital elements caused due by adjustment of one or more elements more efficiently.",
+    "published": "2022-04-01T19:33:11Z",
+    "authors": [
+      "Roshan Sah",
+      "Raunak Srivastava",
+      "Kaushik Das"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2204.00674v1",
+    "doi": null
+  },
+  {
+    "id": "1102.1289v1",
+    "url": "http://arxiv.org/abs/1102.1289v1",
+    "title": "Ion Beam Shepherd for Contactless Space Debris Removal",
+    "summary": "A novel concept for contactless active removal of large space debris is proposed exploiting the use of a high-speed targeted ion beam. The ion beam shepherd spacecraft (IBS) is equipped with an electric propulsion system generating a quasi-neutral plasma pointed against the space debris to remotely modify its orbit without physical contact with the latter. The beam shepherd must be equipped with a secondary propulsion system which counteracts the reaction force exerted by the ion beam hence keeping the distance between the space debris constant throughout the deorbit (or reorbit) process. A preliminary analysis of the concept is provided highlighting the expected performance and the main technologicals challenges. The concept has the potential of making large debris removal operations possible in the near future.",
+    "published": "2011-02-07T12:18:29Z",
+    "authors": [
+      "C. Bombardelli",
+      "J. Pelaez"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/1102.1289v1",
+    "doi": null
+  },
+  {
+    "id": "2211.07812v1",
+    "url": "http://arxiv.org/abs/2211.07812v1",
+    "title": "Simplified Optimization Model for Low-Thrust Perturbed Rendezvous Between Low-Eccentricity Orbits",
+    "summary": "Trajectory optimization of low-thrust perturbed orbit rendezvous is a crucial technology for space missions in low Earth orbits, which is difficult to solve due to its initial value sensitivity, especially when the transfer trajectory has many revolutions. This paper investigated the time-fixed perturbed orbit rendezvous between low-eccentricity orbits and proposed a priori quasi-optimal thrust strategy to simplify the problem into a parametric optimization problem, which significantly reduces the complexity. The optimal trajectory is divided into three stages including transfer to a certain intermediate orbit, thrust-off drifting and transfer from intermediate orbit to the target orbit. In the two transfer stages, the spacecraft is assumed to use a parametric law of thrust. Then, the optimization model can be then obtained using very few unknowns. Finally, a differential evolution algorithm is adopted to solve the simplified optimization model and an analytical correction process is proposed to eliminate the numerical errors. Simulation results and comparisons with previous methods proved this new method's efficiency and high precision for low-eccentricity orbits. The method can be well applied to premilitary analysis and high-precision trajectory optimization of missions such as in-orbit service and active debris removal in low Earth orbits.",
+    "published": "2022-11-15T00:35:05Z",
+    "authors": [
+      "An-yi Huang",
+      "Heng-nian Li"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2211.07812v1",
+    "doi": "10.1016/j.asr.2023.01.016"
+  },
+  {
+    "id": "1404.1446v1",
+    "url": "http://arxiv.org/abs/1404.1446v1",
+    "title": "Multiple Space Debris Collecting Mission -- Optimal Mission Planning",
+    "summary": "This paper addresses the problem of planning successive Space Debris Collecting missions so that they can be achieved at minimal cost by a generic vehicle. The problem mixes combinatorial optimization to select and order the debris among a list of candidates, and continuous optimization to fix the rendezvous dates and to define the minimum fuel orbital maneuvers. The solution method proposed consists in three stages. Firstly the orbital transfer problem is simplified by considering a generic transfer strategy suited either to a high thrust or a low thrust vehicle. A response surface modelling is built by solving the reduced problem for all pairs of debris and for discretized dates, and storing the results in cost matrices. Secondly a simulated annealing algorithm is applied to find the optimal mission planning. The cost function is assessed by interpolation on the response surface based on the cost matrices. This allows the convergence of the simulated algorithm in a limited computation time, yielding an optimal mission planning. Thirdly the successive missions are re-optimized in terms of transfer maneuvers and dates without changing the debris order. These continuous control problems yield a refined solution with the performance requirement for designing the future Space Debris Collecting vehicle. The method is applicable for large list of debris and for various assumptions regarding the cleaning program (number of missions, number of debris per mission, total duration, deorbitation scenario, high or low thrust vehicle). It is exemplified on an application case with 3 missions to plan, each mission visiting 5 SSO debris to be selected in a list of 21 candidates.",
+    "published": "2014-04-05T08:29:42Z",
+    "authors": [
+      "Max Cerf"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/1404.1446v1",
+    "doi": null
+  },
+  {
+    "id": "1410.6727v1",
+    "url": "http://arxiv.org/abs/1410.6727v1",
+    "title": "Concept-of-Operations Disposal Analysis of Spacecraft by Gossamer Structure",
+    "summary": "A gossamer structure for end-of-life disposal of spacecraft to mitigate space debris is considered in comparison with other end-of-life disposal concepts to determine when it would be preferable. A needs analysis, potential use cases, and concept-of-operations are developed. A survey of disposal strategies is presented for comparison prior to a down-selection of viable competing techniques; solar sailing, high and low-thrust propulsion, and electrodynamic tethers. A parametric comparison of the down-selection competing techniques is presented. Exploiting solar radiation pressure on the structure is of limited value. Atmospheric drag augmentation was found to be of most benefit for end-of-life disposal when an entirely passive means is required, allowing the gossamer device to act as a fail-safe. This is applicable to only low and medium mass spacecraft, or spacecraft that are unlikely to survive atmospheric re-entry, hence minimizing risk to human life. It does not significantly alter the operating ceiling altitude but does the maximum allowable end-of-life mass. Peak mass benefit occurs in the altitude range 550 - 650 km and is largely independent of de-orbit time.",
+    "published": "2014-10-24T16:16:29Z",
+    "authors": [
+      "Malcolm Macdonald",
+      "Colin McInnes",
+      "Charlotte Lücking Bewick",
+      "Lourens Visagie",
+      "Vaios Lappas",
+      "Sven Erb"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/1410.6727v1",
+    "doi": null
+  },
+  {
+    "id": "2007.07699v2",
+    "url": "http://arxiv.org/abs/2007.07699v2",
+    "title": "The Benefits of Very Low Earth Orbit for Earth Observation Missions",
+    "summary": "Very low Earth orbits (VLEO), typically classified as orbits below approximately 450 km in altitude, have the potential to provide significant benefits to spacecraft over those that operate in higher altitude orbits. This paper provides a comprehensive review and analysis of these benefits to spacecraft operations in VLEO, with parametric investigation of those which apply specifically to Earth observation missions. The most significant benefit for optical imaging systems is that a reduction in orbital altitude improves spatial resolution for a similar payload specification. Alternatively mass and volume savings can be made whilst maintaining a given performance. Similarly, for radar and lidar systems, the signal-to-noise ratio can be improved. Additional benefits include improved geospatial position accuracy, improvements in communications link-budgets, and greater launch vehicle insertion capability. The collision risk with orbital debris and radiation environment can be shown to be improved in lower altitude orbits, whilst compliance with IADC guidelines for spacecraft post-mission lifetime and deorbit is also assisted. Finally, VLEO offers opportunities to exploit novel atmosphere-breathing electric propulsion systems and aerodynamic attitude and orbit control methods.   However, key challenges associated with our understanding of the lower thermosphere, aerodynamic drag, the requirement to provide a meaningful orbital lifetime whilst minimising spacecraft mass and complexity, and atomic oxygen erosion still require further research. Given the scope for significant commercial, societal, and environmental impact which can be realised with higher performing Earth observation platforms, renewed research efforts to address the challenges associated with VLEO operations are required.",
+    "published": "2020-07-15T14:16:34Z",
+    "authors": [
+      "N. H. Crisp",
+      "P. C. E. Roberts",
+      "S. Livadiotti",
+      "V. T. A. Oiko",
+      "S. Edmondson",
+      "S. J. Haigh",
+      "C. Huyton",
+      "L. Sinpetru",
+      "K. L. Smith",
+      "S. D. Worrall",
+      "J. Becedas",
+      "R. M. Domínguez",
+      "D. González",
+      "V. Hanessian",
+      "A. Mølgaard",
+      "J. Nielsen",
+      "M. Bisgaard",
+      "Y. -A. Chan",
+      "S. Fasoulas",
+      "G. H. Herdrich",
+      "F. Romano",
+      "C. Traub",
+      "D. García-Almiñana",
+      "S. Rodríguez-Donaire",
+      "M. Sureda",
+      "D. Kataria",
+      "R. Outlaw",
+      "B. Belkouchi",
+      "A. Conte",
+      "J. S. Perez",
+      "R. Villain",
+      "B. Heißerer",
+      "A. Schwalber"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2007.07699v2",
+    "doi": "10.1016/j.paerosci.2020.100619"
+  },
+  {
+    "id": "2509.12351v1",
+    "url": "http://arxiv.org/abs/2509.12351v1",
+    "title": "Space Mission Options for Reconnaissance and Mitigation of Asteroid 2024 YR4",
+    "summary": "Near-Earth asteroid 2024 YR4 was discovered on 2024-12-27 and its probability of Earth impact in December 2032 peaked at about 3% on 2025-02-18. Additional observations ruled out Earth impact by 2025-02-23. However, the probability of lunar impact in December 2032 then rose, reaching about 4% by the end of the apparition in May 2025. James Webb Space Telescope (JWST) observations on 2025-03-26 estimated the asteroid's diameter at 60 +/- 7 m. Studies of 2024 YR4's potential lunar impact effects suggest lunar ejecta could increase micrometeoroid debris flux in low Earth orbit up to 1000 times above background levels over just a few days, possibly threatening astronauts and spacecraft. In this work, we present options for space missions to 2024 YR4 that could be utilized if lunar impact is confirmed. We cover flyby & rendezvous reconnaissance, deflection, and robust disruption of the asteroid. We examine both rapid-response and delayed launch options through 2032. We evaluate chemical and solar electric propulsion, various launch vehicles, optimized deep space maneuvers, and gravity assists. Re-tasking extant spacecraft and using built spacecraft not yet launched are also considered. The best reconnaissance mission options launch in late 2028, leaving only approximately three years for development at the time of this writing in August 2025. Deflection missions were assessed and appear impractical. However, kinetic robust disruption missions are available with launches between April 2030 and April 2032. Nuclear robust disruption missions are also available with launches between late 2029 and late 2031. Finally, even if lunar impact is ruled out there is significant potential utility in deploying a reconnaissance mission to characterize the asteroid.",
+    "published": "2025-09-15T18:26:08Z",
+    "authors": [
+      "Brent W. Barbee",
+      "Matthew A. Vavrina",
+      "Rylie Bull",
+      "Adrienne Rudolph",
+      "Davide Farnocchia",
+      "Russell TerBeek",
+      "Justin Atchison",
+      "Joshua Lyzhoft",
+      "Jessie Dotson",
+      "Patrick King",
+      "Paul W. Chodas",
+      "Dawn Graninger",
+      "Ronald G. Mink",
+      "Kathryn M. Kumamoto",
+      "Jason M. Pearl",
+      "Mary Burkey",
+      "Isaiah Santistevan",
+      "Catherine S. Plesko",
+      "Wendy K. Caldwell",
+      "Megan Harwell"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2509.12351v1",
+    "doi": null
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "time_of_flight_hours": 47.99583333333333,
+  "total_delta_v_m_s": 3456.0000000007676,
+  "initial_altitude_km": 600.0,
+  "target_altitude_km": 800.0,
+  "initial_inclination_deg": 53.0,
+  "target_inclination_deg": 54.0,
+  "revolutions_approx": 29.78701433339475
+}
