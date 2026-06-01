@@ -1,0 +1,23 @@
+{
+  "random": {
+    "avg_cleared": 0.82,
+    "clearance_rate": "10.2%",
+    "avg_delta_v": 6290.9,
+    "fuel_per_target": 8191.5,
+    "std_delta_v": 4499.6
+  },
+  "nearest": {
+    "avg_cleared": 2.46,
+    "clearance_rate": "30.8%",
+    "avg_delta_v": 9204.1,
+    "fuel_per_target": 4174.2,
+    "std_delta_v": 2041.4
+  },
+  "risk_weighted": {
+    "avg_cleared": 2.42,
+    "clearance_rate": "30.2%",
+    "avg_delta_v": 9061.5,
+    "fuel_per_target": 4142.3,
+    "std_delta_v": 1974.5
+  }
+}

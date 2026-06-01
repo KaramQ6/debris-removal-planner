@@ -1,16 +1,14 @@
-# Deep Research Brief: Low-Thrust Electric Propulsion (EP) Trajectory Optimization for Active Debris Removal (ADR)
+# Deep Research Brief: Low-Thrust Electric Propulsion Trajectory Optimization for Active Debris Removal
 
-**Subject:** Addressing Section VII Trajectory Limitations in the AEECT 2026 Paper  
-**Prepared by:** Antigravity (Advanced AI Research Assistant) & Team ta5abes  
-**Target Tracks:** Control, Robotics, and Mechatronics & Data Science and Artificial Intelligence  
-**Resources Integrated:** arXiv API, Sci-Hub (`https://sci-hub.red/`), and Sci-Bot (`https://sci-bot.ru/`)  
+**Subject:** Trajectory Optimization and Low-Thrust Dynamics Analysis for Multi-Target Active Debris Removal (ADR)
+**Focus Areas:** Astrodynamics, Optimal Control, Reinforcement Learning, and Space Debris Mitigation
 
 ---
 
 ## Executive Summary
 Conventional Active Debris Removal (ADR) planning assumes impulsive maneuvers ($\Delta V$), which are highly efficient for chemical thrusters but do not reflect the physics of modern low-thrust, high-efficiency **Electric Propulsion (EP)** systems (such as Hall Effect Thrusters and Gridded Ion Engines). Low-thrust transfers operate continuously over weeks or months, resulting in "many-revolution spirals" that are mathematically complex and highly sensitive to initial boundary conditions. 
 
-This research brief compiles, analyzes, and synthesizes state-of-the-art academic methodologies for low-thrust trajectory optimization in ADR missions. It provides direct, paywall-free access to high-impact publications via **Sci-Hub** and **Sci-Bot**, and outlines how these methods can be integrated into the **Intelligent Orbital Debris Removal Planner** codebase to resolve Section VII's limitations.
+This research brief compiles, analyzes, and synthesizes state-of-the-art academic methodologies for low-thrust trajectory optimization in ADR missions. It analyzes high-impact publications and outlines how these methods can be integrated into the **Intelligent Orbital Debris Removal Planner** framework to resolve low-thrust trajectory limitations.
 
 ---
 

@@ -9,7 +9,7 @@ def verify_paper(paper_path):
     errors = []
     
     # 1. Verify Abstract Length
-    abstract_match = re.search(r"### Abstract\s*\n(.*?)\n\n", content, re.DOTALL)
+    abstract_match = re.search(r"#{1,3} Abstract\s*\n(.*?)\n\n", content, re.DOTALL)
     if abstract_match:
         abstract_text = abstract_match.group(1).strip()
         words = abstract_text.split()
@@ -64,6 +64,6 @@ def verify_paper(paper_path):
         return True
 
 if __name__ == "__main__":
-    paper_path = r"c:\Users\ASUS\OneDrive\المستندات\GitHub\debris-removal-planner\docs\AEECT_2026_Paper_Draft.md"
+    paper_path = "docs/AEECT_2026_Paper_Draft.md"
     success = verify_paper(paper_path)
     sys.exit(0 if success else 1)

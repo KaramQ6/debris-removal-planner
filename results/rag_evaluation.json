@@ -1,0 +1,572 @@
+{
+  "table_iv_verification": [
+    {
+      "query": "LEO disposal timeline",
+      "top_source": "AEECT_2026_Paper_Draft.md",
+      "top_score": 7.62,
+      "all_scores": [
+        7.62,
+        7.29,
+        6.48
+      ],
+      "all_sources": [
+        "AEECT_2026_Paper_Draft.md",
+        "AEECT_2026_Paper_Draft.md",
+        "aeect-2026-draft-review-evidence.md"
+      ],
+      "answer_snippet": "Advisory response for: \"LEO disposal timeline\"\n============================================================\nRetrieved 3 relevant passages from mission documents:\n\n[1] (relevance: 7.619, source: AEECT_2026_Paper_Draft.md)\n    The preliminary information retrieval performance results are as follows: *",
+      "latency_ms": 4.67
+    },
+    {
+      "query": "Conjunction fuel protocol",
+      "top_source": "aeect-2026-draft-review-evidence.md",
+      "top_score": 6.52,
+      "all_scores": [
+        6.52,
+        6.26,
+        6.17
+      ],
+      "all_sources": [
+        "aeect-2026-draft-review-evidence.md",
+        "AEECT_2026_Paper_Draft.md",
+        "aeect-2026-draft-review-evidence.md"
+      ],
+      "answer_snippet": "Advisory response for: \"Conjunction fuel protocol\"\n============================================================\nRetrieved 3 relevant passages from mission documents:\n\n[1] (relevance: 6.525, source: aeect-2026-draft-review-evidence.md)\n    post-mission disposal guidance (supports Table IV query about",
+      "latency_ms": 4.63
+    },
+    {
+      "query": "High-risk debris prioritization",
+      "top_source": "AEECT_2026_Paper_Draft.md",
+      "top_score": 7.03,
+      "all_scores": [
+        7.03,
+        6.65,
+        6.56
+      ],
+      "all_sources": [
+        "AEECT_2026_Paper_Draft.md",
+        "debris_mitigation_best_practices.md",
+        "aeect-2026-draft-review-evidence.md"
+      ],
+      "answer_snippet": "Advisory response for: \"High-risk debris prioritization\"\n============================================================\nRetrieved 3 relevant passages from mission documents:\n\n[1] (relevance: 7.030, source: AEECT_2026_Paper_Draft.md)\n    | *\"LEO disposal timeline\"* | `iadc_guidelines.md` | $12.34$ | \"D",
+      "latency_ms": 2.95
+    }
+  ],
+  "benchmark_summary": {
+    "n_queries": 30,
+    "avg_latency_ms": 1.9,
+    "avg_top_score": 9.73
+  },
+  "per_query_results": [
+    {
+      "query": "What is the 25-year disposal rule for LEO satellites?",
+      "top_score": 10.37,
+      "top_source": "AEECT_2026_Paper_Draft.md",
+      "scores": [
+        10.37,
+        9.62,
+        8.96
+      ],
+      "sources": [
+        "AEECT_2026_Paper_Draft.md",
+        "aeect-2026-draft-review-evidence.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "| *\"LEO disposal timeline\"* | `iadc_guidelines.md` | $12.34$ | \"Debris in LEO should be de-orbited o",
+      "latency_ms": 2.02
+    },
+    {
+      "query": "How should spent rocket bodies be disposed?",
+      "top_score": 10.67,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        10.67,
+        5.86,
+        5.74
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "AEECT_2026_Paper_Draft.md",
+        "Submission_and_Evaluation.md"
+      ],
+      "snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather ",
+      "latency_ms": 1.78
+    },
+    {
+      "query": "What are post-mission disposal requirements?",
+      "top_score": 8.97,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        8.97,
+        8.8,
+        8.6
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md",
+        "debris_mitigation_best_practices.md"
+      ],
+      "snippet": "life of the spacecraft itself. Even technically successful missions can become sustainability failur",
+      "latency_ms": 1.79
+    },
+    {
+      "query": "When must a satellite complete de-orbit after end-of-life?",
+      "top_score": 16.53,
+      "top_source": "debris_mitigation_best_practices.md",
+      "scores": [
+        16.53,
+        11.13,
+        10.42
+      ],
+      "sources": [
+        "debris_mitigation_best_practices.md",
+        "AEECT_2026_Paper_Draft.md",
+        "iadc_guidelines_excerpt.md"
+      ],
+      "snippet": "during periods of elevated space weather (solar storms can cause catalog uncertainty to increase). D",
+      "latency_ms": 1.89
+    },
+    {
+      "query": "What altitude defines the LEO protected zone?",
+      "top_score": 8.97,
+      "top_source": "AEECT_2026_Paper_Draft.md",
+      "scores": [
+        8.97,
+        8.67,
+        5.5
+      ],
+      "sources": [
+        "AEECT_2026_Paper_Draft.md",
+        "iadc_guidelines_excerpt.md",
+        "debris_mitigation_best_practices.md"
+      ],
+      "snippet": "law models a physical ball rolling down a bowl: the Lyapunov function $Q$ defines the shape of the b",
+      "latency_ms": 1.8
+    },
+    {
+      "query": "What are the requirements for passivation of a spacecraft?",
+      "top_score": 6.48,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        6.48,
+        5.11,
+        4.4
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "walkthrough.md",
+        "concept_document.md"
+      ],
+      "snippet": "**Sustainable Space Systems** **& Orbital Lifecycle** **Sustainable Space Systems** **& Orbital Life",
+      "latency_ms": 1.77
+    },
+    {
+      "query": "How to safely dispose of a GEO satellite?",
+      "top_score": 6.87,
+      "top_source": "AEECT_2026_Paper_Draft.md",
+      "scores": [
+        6.87,
+        4.21,
+        4.1
+      ],
+      "sources": [
+        "AEECT_2026_Paper_Draft.md",
+        "ta5abes_DebrisPlanner_Phase1_PresentationOutline.md",
+        "ta5abes_DebrisPlanner_Phase1_VideoScript.md"
+      ],
+      "snippet": "2021 (covers SB3-Contrib package). * [17] CelesTrak, \"CelesTrak: Satellite orbital data,\" [Online]. ",
+      "latency_ms": 1.76
+    },
+    {
+      "query": "What is the graveyard orbit disposal strategy?",
+      "top_score": 13.56,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        13.56,
+        9.7,
+        9.19
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather ",
+      "latency_ms": 1.78
+    },
+    {
+      "query": "What fuel reserves must be allocated for disposal?",
+      "top_score": 7.27,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        7.27,
+        7.09,
+        6.77
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "AEECT_2026_Paper_Draft.md",
+        "ta5abes_DebrisPlanner_Phase1_VideoScript.md"
+      ],
+      "snippet": "also consider how it is designed, how efficiently it uses orbital resources, and what happens when t",
+      "latency_ms": 1.84
+    },
+    {
+      "query": "What are the collision probability thresholds?",
+      "top_score": 7.35,
+      "top_source": "iadc_guidelines_excerpt.md",
+      "scores": [
+        7.35,
+        5.93,
+        5.36
+      ],
+      "sources": [
+        "iadc_guidelines_excerpt.md",
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann",
+      "latency_ms": 1.72
+    },
+    {
+      "query": "How should a spacecraft perform a collision avoidance maneuver?",
+      "top_score": 17.02,
+      "top_source": "iadc_guidelines_excerpt.md",
+      "scores": [
+        17.02,
+        14.67,
+        12.52
+      ],
+      "sources": [
+        "iadc_guidelines_excerpt.md",
+        "Sustainable_Space_Systems.md",
+        "debris_mitigation_best_practices.md"
+      ],
+      "snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann",
+      "latency_ms": 1.81
+    },
+    {
+      "query": "What distance defines a close approach?",
+      "top_score": 7.34,
+      "top_source": "Low_Thrust_Debris_Removal_Research.md",
+      "scores": [
+        7.34,
+        6.23,
+        5.11
+      ],
+      "sources": [
+        "Low_Thrust_Debris_Removal_Research.md",
+        "Low_Thrust_Debris_Removal_Research.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "\\cdot u_n + \\frac{p}{r} \\cdot u_t \\right)$$ $$\\frac{de}{dt} = \\frac{1}{h} \\left[ p \\sin\\nu \\cdot u_n",
+      "latency_ms": 1.73
+    },
+    {
+      "query": "When should operators be notified of a conjunction event?",
+      "top_score": 14.51,
+      "top_source": "iadc_guidelines_excerpt.md",
+      "scores": [
+        14.51,
+        13.67,
+        9.44
+      ],
+      "sources": [
+        "iadc_guidelines_excerpt.md",
+        "nasa_esa_reference_excerpt.txt",
+        "iadc_guidelines_excerpt.md"
+      ],
+      "snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann",
+      "latency_ms": 1.86
+    },
+    {
+      "query": "What tracking accuracy is required for conjunction assessment?",
+      "top_score": 9.47,
+      "top_source": "iadc_guidelines_excerpt.md",
+      "scores": [
+        9.47,
+        6.96,
+        6.94
+      ],
+      "sources": [
+        "iadc_guidelines_excerpt.md",
+        "nasa_esa_reference_excerpt.txt",
+        "aeect-2026-draft-review-evidence.md"
+      ],
+      "snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann",
+      "latency_ms": 1.96
+    },
+    {
+      "query": "How to calculate collision probability between two objects?",
+      "top_score": 12.76,
+      "top_source": "iadc_guidelines_excerpt.md",
+      "scores": [
+        12.76,
+        9.73,
+        9.54
+      ],
+      "sources": [
+        "iadc_guidelines_excerpt.md",
+        "debris_mitigation_best_practices.md",
+        "iadc_guidelines_excerpt.md"
+      ],
+      "snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann",
+      "latency_ms": 1.89
+    },
+    {
+      "query": "What mitigation measures exist for solar activity effects?",
+      "top_score": 8.1,
+      "top_source": "concept_document.md",
+      "scores": [
+        8.1,
+        6.19,
+        5.34
+      ],
+      "sources": [
+        "concept_document.md",
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "transfers only, no inclination changes, no J2 perturbation - **Training data is simulated** \u2014 real d",
+      "latency_ms": 1.85
+    },
+    {
+      "query": "What are the IADC guidelines for debris mitigation?",
+      "top_score": 10.09,
+      "top_source": "concept_document.md",
+      "scores": [
+        10.09,
+        8.48,
+        8.41
+      ],
+      "sources": [
+        "concept_document.md",
+        "demo_video_script.md",
+        "AEECT_2026_Paper_Draft.md"
+      ],
+      "snippet": "highly competitive and globally aware sequence while remaining highly adaptable. ### 6. RAG Advisory",
+      "latency_ms": 2.11
+    },
+    {
+      "query": "What tracking networks monitor space debris?",
+      "top_score": 5.7,
+      "top_source": "walkthrough.md",
+      "scores": [
+        5.7,
+        5.49,
+        5.21
+      ],
+      "sources": [
+        "walkthrough.md",
+        "Sustainable_Space_Systems.md",
+        "aeect_2026_cfp_text.txt"
+      ],
+      "snippet": "**Documentation** | `README.md`, `.gitignore`, `requirements.txt`, `LICENSE`, `architecture_diagram.",
+      "latency_ms": 1.98
+    },
+    {
+      "query": "How does atmospheric drag affect debris lifetime?",
+      "top_score": 10.75,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        10.75,
+        9.58,
+        9.32
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "pitch. They should present the mission or subsystem concept, lifecycle strategy, technical assumptio",
+      "latency_ms": 2.1
+    },
+    {
+      "query": "What shielding is recommended against small debris impacts?",
+      "top_score": 6.1,
+      "top_source": "demo_video_script.md",
+      "scores": [
+        6.1,
+        6.1,
+        5.71
+      ],
+      "sources": [
+        "demo_video_script.md",
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "THE WOW MOMENT **Visual**: Open `results/mission_interactive_nearest.html` in browser **Narration**:",
+      "latency_ms": 1.92
+    },
+    {
+      "query": "How should tethered systems be designed to minimize debris?",
+      "top_score": 10.78,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        10.78,
+        8.86,
+        7.83
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "iadc_guidelines_excerpt.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "**Sustainable Space Systems** **& Orbital Lifecycle** **Sustainable Space Systems** **& Orbital Life",
+      "latency_ms": 2.02
+    },
+    {
+      "query": "What are the break-up criteria for defunct spacecraft?",
+      "top_score": 6.51,
+      "top_source": "iadc_guidelines_excerpt.md",
+      "scores": [
+        6.51,
+        4.73,
+        4.49
+      ],
+      "sources": [
+        "iadc_guidelines_excerpt.md",
+        "aeect-2026-draft-review-plan.md",
+        "AEECT_2026_Paper_Draft.md"
+      ],
+      "snippet": "# IADC Space Debris Mitigation Guidelines \u2014 Key Excerpts > Source: Inter-Agency Space Debris Coordin",
+      "latency_ms": 1.89
+    },
+    {
+      "query": "What explosive device safety margins are required?",
+      "top_score": 5.85,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        5.85,
+        4.81,
+        4.79
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "walkthrough.md",
+        "Low_Thrust_Debris_Removal_Research.md"
+      ],
+      "snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather ",
+      "latency_ms": 1.9
+    },
+    {
+      "query": "How should propellant tanks be vented at end-of-life?",
+      "top_score": 12.16,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        12.16,
+        11.11,
+        9.77
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "iadc_guidelines_excerpt.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather ",
+      "latency_ms": 2.03
+    },
+    {
+      "query": "What materials should be avoided to reduce debris creation?",
+      "top_score": 10.17,
+      "top_source": "debris_mitigation_best_practices.md",
+      "scores": [
+        10.17,
+        9.5,
+        9.12
+      ],
+      "sources": [
+        "debris_mitigation_best_practices.md",
+        "nasa_esa_reference_excerpt.txt",
+        "iadc_guidelines_excerpt.md"
+      ],
+      "snippet": "# Debris Removal Best Practices \u2014 Operational Reference > Compiled from publicly available NASA, ESA",
+      "latency_ms": 1.94
+    },
+    {
+      "query": "What battery safety procedures are required for end-of-life?",
+      "top_score": 9.43,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        9.43,
+        8.21,
+        8.15
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "debris_mitigation_best_practices.md",
+        "nasa_esa_reference_excerpt.txt"
+      ],
+      "snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather ",
+      "latency_ms": 1.9
+    },
+    {
+      "query": "What are the requirements for on-orbit servicing vehicles?",
+      "top_score": 8.43,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        8.43,
+        6.99,
+        6.91
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md",
+        "Sustainable_Space_Systems.md"
+      ],
+      "snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather ",
+      "latency_ms": 1.94
+    },
+    {
+      "query": "How should large constellation operators manage debris risk?",
+      "top_score": 14.22,
+      "top_source": "iadc_guidelines_excerpt.md",
+      "scores": [
+        14.22,
+        10.53,
+        9.79
+      ],
+      "sources": [
+        "iadc_guidelines_excerpt.md",
+        "iadc_guidelines_excerpt.md",
+        "nasa_esa_reference_excerpt.txt"
+      ],
+      "snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann",
+      "latency_ms": 2.09
+    },
+    {
+      "query": "What is the acceptable probability of casualty from re-entry?",
+      "top_score": 7.88,
+      "top_source": "debris_mitigation_best_practices.md",
+      "scores": [
+        7.88,
+        4.44,
+        4.2
+      ],
+      "sources": [
+        "debris_mitigation_best_practices.md",
+        "Sustainable_Space_Systems.md",
+        "iadc_guidelines_excerpt.md"
+      ],
+      "snippet": "during periods of elevated space weather (solar storms can cause catalog uncertainty to increase). D",
+      "latency_ms": 2.03
+    },
+    {
+      "query": "What are the NASA requirements for orbital debris limitation?",
+      "top_score": 7.67,
+      "top_source": "Sustainable_Space_Systems.md",
+      "scores": [
+        7.67,
+        6.69,
+        6.22
+      ],
+      "sources": [
+        "Sustainable_Space_Systems.md",
+        "Ta5abes_Presentation\u062a\u0645 \u062a\u0633\u0644\u064a\u0645\u0647 .md",
+        "walkthrough.md"
+      ],
+      "snippet": "**Sustainable Space Systems** **& Orbital Lifecycle** **Sustainable Space Systems** **& Orbital Life",
+      "latency_ms": 1.99
+    }
+  ]
+}

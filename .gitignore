@@ -65,3 +65,9 @@ tools/inspect_text.py
 Template presentation.pptx
 text_dump.json
 .claude/settings.json
+
+# Large generated files (keep repo under GitHub limits)
+results/training_history.json
+Space_Debris_Planner_Research_Package.zip
+Space_Debris_Planner_Research_Package/
+tools/compute_ci.py

@@ -1,0 +1,81 @@
+{
+  "random": {
+    "avg_cleared": 0.79,
+    "std_cleared": 0.78,
+    "avg_delta_v": 4716.5,
+    "std_delta_v": 4583.9,
+    "fuel_per_target": 6427.4,
+    "clearance_rate": "9.9%",
+    "ci_95": {
+      "cleared_ci_low": 0.64,
+      "cleared_ci_high": 0.95
+    }
+  },
+  "nearest": {
+    "avg_cleared": 3.15,
+    "std_cleared": 1.19,
+    "avg_delta_v": 8399.6,
+    "std_delta_v": 2365.0,
+    "fuel_per_target": 3099.2,
+    "clearance_rate": "39.4%",
+    "ci_95": {
+      "cleared_ci_low": 2.92,
+      "cleared_ci_high": 3.38
+    }
+  },
+  "risk_weighted": {
+    "avg_cleared": 3.14,
+    "std_cleared": 1.15,
+    "avg_delta_v": 8419.7,
+    "std_delta_v": 2385.5,
+    "fuel_per_target": 3083.9,
+    "clearance_rate": "39.2%",
+    "ci_95": {
+      "cleared_ci_low": 2.92,
+      "cleared_ci_high": 3.36
+    }
+  },
+  "ppo": {
+    "avg_cleared": 2.22,
+    "std_cleared": 1.1,
+    "avg_delta_v": 10150.4,
+    "std_delta_v": 1859.1,
+    "fuel_per_target": 5903.2,
+    "clearance_rate": "27.8%",
+    "ci_95": {
+      "cleared_ci_low": 2.01,
+      "cleared_ci_high": 2.44
+    }
+  },
+  "statistical_tests": {
+    "ppo_vs_random": {
+      "cleared_W": 42.0,
+      "cleared_p": 1.764452999346007e-14,
+      "cleared_r": 0.9734177215189873,
+      "delta_v_W": 121.0,
+      "delta_v_p": 4.825276766710009e-16
+    },
+    "ppo_vs_nearest": {
+      "cleared_W": 102.5,
+      "cleared_p": 2.4256051385046044e-10,
+      "cleared_r": -0.8983134920634921,
+      "delta_v_W": 577.0,
+      "delta_v_p": 1.9709240116044098e-09
+    },
+    "ppo_vs_risk_weighted": {
+      "cleared_W": 102.0,
+      "cleared_p": 8.376852280865834e-11,
+      "cleared_r": -0.9048951048951049,
+      "delta_v_W": 557.0,
+      "delta_v_p": 1.2067560799009139e-09
+    }
+  },
+  "evaluation_params": {
+    "episodes": 100,
+    "seed": 7,
+    "targets": 8,
+    "fuel": 12000.0,
+    "max_steps": 50,
+    "scenario": "LEO_medium_preset"
+  }
+}

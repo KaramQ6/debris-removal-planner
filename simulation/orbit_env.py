@@ -173,8 +173,12 @@ class OrbitDebrisEnv(gym.Env[np.ndarray, int]):
     def action_mask(self) -> np.ndarray:
         mask = np.zeros(self.max_targets, dtype=bool)
         for i in range(len(self._targets)):
-            if self._active[i]:
+            if self._active[i] and self.delta_v_to_target(i) <= self._fuel_remaining:
                 mask[i] = True
+        if not np.any(mask):
+            for i in range(len(self._targets)):
+                if self._active[i]:
+                    mask[i] = True
         return mask
 
     def action_masks(self) -> np.ndarray:
@@ -295,7 +299,11 @@ class OrbitDebrisEnv(gym.Env[np.ndarray, int]):
         obs[7] = float(math.sin(arg_p_rad))
         obs[8] = self._normalize_sma(self._sp_sma)
         obs[9] = float(self._sp_ecc)
-        obs[10] = float(2.0 * (self._fuel_remaining / self._scenario.fuel_budget) - 1.0)
+        if self._scenario.fuel_budget > 0.0:
+            obs[10] = float(2.0 * (self._fuel_remaining / self._scenario.fuel_budget) - 1.0)
+        else:
+            obs[10] = -1.0
+
 
         # Per-target features: [cos(nu), sin(nu), cos(raan), sin(raan), cos(inc), sin(inc), cos(arg_p), sin(arg_p), sma_norm, ecc, risk, active]
         for i in range(self.max_targets):

@@ -1,0 +1,42 @@
+{
+  "random": {
+    "avg_delta_v": 6604.303945656917,
+    "std_delta_v": 0.0,
+    "avg_cleared": 1.0,
+    "avg_fuel_remaining": 0.0,
+    "completion_rate": 1.0,
+    "fuel_per_target": 6604.303945656917,
+    "accuracy": 0.3333333333333333,
+    "episodes": 1
+  },
+  "nearest": {
+    "avg_delta_v": 2764.5994829040515,
+    "std_delta_v": 0.0,
+    "avg_cleared": 1.0,
+    "avg_fuel_remaining": 0.0,
+    "completion_rate": 1.0,
+    "fuel_per_target": 2764.5994829040515,
+    "accuracy": 0.3333333333333333,
+    "episodes": 1
+  },
+  "risk_weighted": {
+    "avg_delta_v": 11684.967287537936,
+    "std_delta_v": 0.0,
+    "avg_cleared": 1.0,
+    "avg_fuel_remaining": 0.0,
+    "completion_rate": 1.0,
+    "fuel_per_target": 11684.967287537936,
+    "accuracy": 0.3333333333333333,
+    "episodes": 1
+  },
+  "branch_and_bound": {
+    "avg_delta_v": 7993.622086878011,
+    "std_delta_v": 0.0,
+    "avg_cleared": 1.0,
+    "avg_fuel_remaining": 0.0,
+    "completion_rate": 1.0,
+    "fuel_per_target": 7993.622086878011,
+    "accuracy": 0.3333333333333333,
+    "episodes": 1
+  }
+}

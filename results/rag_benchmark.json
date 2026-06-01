@@ -1,0 +1,566 @@
+{
+  "summary": {
+    "total_queries": 30,
+    "precision_at_1": 0.5666666666666667,
+    "precision_at_3": 0.8333333333333334,
+    "mrr": 0.6833333333333332,
+    "avg_latency_ms": 2.189483332040254
+  },
+  "queries": [
+    {
+      "query": "What is the recommended disposal timeline for Low Earth Orbit?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.2811999990371987,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "risk to the payload. ### 2.2 Avoidance of Intentional Destruction Intentional destruction of a space"
+        }
+      ]
+    },
+    {
+      "query": "What are the deorbit rules for LEO?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 2.8162999951746315,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "**Sustainable Space Systems** **& Orbital Lifecycle** **Sustainable Space Systems** **& Orbital Life"
+        },
+        {
+          "rank": 2,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "metrics. A measurable sustainability framework using KPIs, timeline reasoning, and defendable assump"
+        },
+        {
+          "rank": 3,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "pitch. They should present the mission or subsystem concept, lifecycle strategy, technical assumptio"
+        }
+      ]
+    },
+    {
+      "query": "How long can debris remain in orbit after EOL?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 2.134399997885339,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "pitch. They should present the mission or subsystem concept, lifecycle strategy, technical assumptio"
+        },
+        {
+          "rank": 2,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "validated space mission or subsystem concept that explicitly addresses sustainability throughout the"
+        },
+        {
+          "rank": 3,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "risk to the payload. ### 2.2 Avoidance of Intentional Destruction Intentional destruction of a space"
+        }
+      ]
+    },
+    {
+      "query": "What is the 25-year deorbit guideline?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 2.409199994872324,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "aeect-2026-draft-review-evidence.md",
+          "text_snippet": "targets 1.79; task accuracy 22.4%; avg \u0394V 8648.8. - PPO finetuned: targets 1.90; task accuracy 23.8%"
+        },
+        {
+          "rank": 2,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann"
+        }
+      ]
+    },
+    {
+      "query": "What should be done with on-board stored energy at end-of-life?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.313199991476722,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "# IADC Space Debris Mitigation Guidelines \u2014 Key Excerpts > Source: Inter-Agency Space Debris Coordin"
+        }
+      ]
+    },
+    {
+      "query": "How to prevent on-orbit spacecraft break-ups?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1.9508999976096675,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "# IADC Space Debris Mitigation Guidelines \u2014 Key Excerpts > Source: Inter-Agency Space Debris Coordin"
+        }
+      ]
+    },
+    {
+      "query": "What is the depletion timeline for stored energy?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1.8270000000484288,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "# IADC Space Debris Mitigation Guidelines \u2014 Key Excerpts > Source: Inter-Agency Space Debris Coordin"
+        }
+      ]
+    },
+    {
+      "query": "Why should we avoid intentional destruction of spacecraft?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.0508999878074974,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "risk to the payload. ### 2.2 Avoidance of Intentional Destruction Intentional destruction of a space"
+        }
+      ]
+    },
+    {
+      "query": "What disposal actions apply to the Geosynchronous region?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.0355000015115365,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "risk to the payload. ### 2.2 Avoidance of Intentional Destruction Intentional destruction of a space"
+        }
+      ]
+    },
+    {
+      "query": "How should a GEO spacecraft be deorbited?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 1.950100006069988,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather "
+        },
+        {
+          "rank": 2,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "risk to the payload. ### 2.2 Avoidance of Intentional Destruction Intentional destruction of a space"
+        }
+      ]
+    },
+    {
+      "query": "What is the collision probability threshold for scheduling avoidance maneuvers?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.0616999972844496,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann"
+        }
+      ]
+    },
+    {
+      "query": "How many collision avoidance maneuvers must be budgeted per year?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1.98459999228362,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann"
+        }
+      ]
+    },
+    {
+      "query": "What are the conjunction screening rules for spacecraft?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 1.8199999904027209,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "(collision probability is the primary driver) - w2 = 0.3 (larger objects create more secondary debri"
+        },
+        {
+          "rank": 2,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "during periods of elevated space weather (solar storms can cause catalog uncertainty to increase). D"
+        },
+        {
+          "rank": 3,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "**Sustainable Space Systems** **& Orbital Lifecycle** **Sustainable Space Systems** **& Orbital Life"
+        }
+      ]
+    },
+    {
+      "query": "What is the fuel reservation standard for yearly collision maneuvers?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1.9826000061584637,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "lifetime after end of mission is **25 years**. ## 4. Prevention of On-Orbit Collisions Mission plann"
+        }
+      ]
+    },
+    {
+      "query": "Which orbital debris objects are prioritized for active removal?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 2.0102999988012016,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "ta5abes_DebrisPlanner_Phase1_PresentationOutline.md",
+          "text_snippet": "\u2192 RL Agent \u2192 Mission Output + RAG Advisory. ### Slide 4: Lifecycle Strategy & End-of-Life - **Headli"
+        },
+        {
+          "rank": 2,
+          "source": "Low_Thrust_Debris_Removal_Research.md",
+          "text_snippet": "# Deep Research Brief: Low-Thrust Electric Propulsion Trajectory Optimization for Active Debris Remo"
+        },
+        {
+          "rank": 3,
+          "source": "concept_document.md",
+          "text_snippet": "# Intelligent Orbital Debris Removal Planner ## AESS Sustainability Hackathon 2026 ### 1. Problem St"
+        }
+      ]
+    },
+    {
+      "query": "What fuel margins should a debris removal mission budget?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 2.245800002128817,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "AEECT_2026_Paper_Draft.md",
+          "text_snippet": "| *\"LEO disposal timeline\"* | `iadc_guidelines.md` | $12.34$ | \"Debris in LEO should be de-orbited o"
+        },
+        {
+          "rank": 2,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "Active debris removal missions should prioritize objects that: - Reside in high-density orbital regi"
+        }
+      ]
+    },
+    {
+      "query": "What is the fuel constraint protocol when reserve drops below 15%?",
+      "expected": "iadc_guidelines_excerpt.md",
+      "p1_hit": 0,
+      "p3_hit": 0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 2.2000000026309863,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "at all times - When reserve drops below 20%, shift to a conservative mode targeting only objects wit"
+        },
+        {
+          "rank": 2,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "# Debris Removal Best Practices \u2014 Operational Reference > Compiled from publicly available NASA, ESA"
+        },
+        {
+          "rank": 3,
+          "source": "concept_document.md",
+          "text_snippet": "highly competitive and globally aware sequence while remaining highly adaptable. ### 6. RAG Advisory"
+        }
+      ]
+    },
+    {
+      "query": "How to optimize the target sequence to minimize total delta-v?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.255899991723709,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "# Debris Removal Best Practices \u2014 Operational Reference > Compiled from publicly available NASA, ESA"
+        }
+      ]
+    },
+    {
+      "query": "What are fuel conservation protocols during spacecraft transfers?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 2.2551000001840293,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "presentation_outline.md",
+          "text_snippet": "= longer missions + more debris cleared per spacecraft Visual: Delta-V comparison bar chart --- ## S"
+        },
+        {
+          "rank": 2,
+          "source": "concept_document.md",
+          "text_snippet": "highly competitive and globally aware sequence while remaining highly adaptable. ### 6. RAG Advisory"
+        },
+        {
+          "rank": 3,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "# Debris Removal Best Practices \u2014 Operational Reference > Compiled from publicly available NASA, ESA"
+        }
+      ]
+    },
+    {
+      "query": "How does fuel margin management shift below 20%?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.12610000744462,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "# Debris Removal Best Practices \u2014 Operational Reference > Compiled from publicly available NASA, ESA"
+        }
+      ]
+    },
+    {
+      "query": "When should we abort the debris removal mission due to low fuel?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.366399989114143,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "# Debris Removal Best Practices \u2014 Operational Reference > Compiled from publicly available NASA, ESA"
+        }
+      ]
+    },
+    {
+      "query": "What are the average transfer and de-orbit delta-v costs in LEO?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.2615000052610412,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "at all times - When reserve drops below 20%, shift to a conservative mode targeting only objects wit"
+        }
+      ]
+    },
+    {
+      "query": "How to calculate the debris risk priority score?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.2123999951872975,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "at all times - When reserve drops below 20%, shift to a conservative mode targeting only objects wit"
+        }
+      ]
+    },
+    {
+      "query": "What are high-risk orbital regions for space debris?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 2.358900004765019,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "iadc_guidelines_excerpt.md",
+          "text_snippet": "Active debris removal missions should prioritize objects that: - Reside in high-density orbital regi"
+        },
+        {
+          "rank": 2,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "(collision probability is the primary driver) - w2 = 0.3 (larger objects create more secondary debri"
+        }
+      ]
+    },
+    {
+      "query": "What is the ISS orbital inclination and altitude congestion risk?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 2.3015999904600903,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "AEECT_2026_Paper_Draft.md",
+          "text_snippet": "1 cm and 10 cm in Low Earth Orbit (LEO) [12]. At typical orbital velocities of 7.8 km/s, even millim"
+        },
+        {
+          "rank": 2,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "(collision probability is the primary driver) - w2 = 0.3 (larger objects create more secondary debri"
+        }
+      ]
+    },
+    {
+      "query": "How to perform pre-maneuver TLE screening?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.144600002793595,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "(collision probability is the primary driver) - w2 = 0.3 (larger objects create more secondary debri"
+        }
+      ]
+    },
+    {
+      "query": "What are the protocols during dense conjunction windows and solar storms?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.1143000049050897,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "(collision probability is the primary driver) - w2 = 0.3 (larger objects create more secondary debri"
+        }
+      ]
+    },
+    {
+      "query": "What is the passivation procedure for removal spacecraft at EOL?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 0,
+      "p3_hit": 0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 2.0407999982126057,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "ta5abes_DebrisPlanner_Phase1_PresentationOutline.md",
+          "text_snippet": "\u2192 RL Agent \u2192 Mission Output + RAG Advisory. ### Slide 4: Lifecycle Strategy & End-of-Life - **Headli"
+        },
+        {
+          "rank": 2,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "servicing potential, or reuse potential. Each KPI should be tied directly to a design choice rather "
+        },
+        {
+          "rank": 3,
+          "source": "Sustainable_Space_Systems.md",
+          "text_snippet": "metrics. A measurable sustainability framework using KPIs, timeline reasoning, and defendable assump"
+        }
+      ]
+    },
+    {
+      "query": "What documentation is required for debris removal missions?",
+      "expected": "debris_mitigation_best_practices.md",
+      "p1_hit": 0,
+      "p3_hit": 1,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 2.051600007689558,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "walkthrough.md",
+          "text_snippet": "# Walkthrough \u2014 Intelligent Orbital Debris Removal Planner ## Summary Transformed the starter skelet"
+        },
+        {
+          "rank": 2,
+          "source": "nasa_esa_reference_excerpt.txt",
+          "text_snippet": "NASA-STD-8719.14 and ESA debris guidance emphasize mission planning practices that reduce fragmentat"
+        },
+        {
+          "rank": 3,
+          "source": "debris_mitigation_best_practices.md",
+          "text_snippet": "during periods of elevated space weather (solar storms can cause catalog uncertainty to increase). D"
+        }
+      ]
+    },
+    {
+      "query": "How do NASA and ESA emphasize mission planning and fragmentation risk?",
+      "expected": "nasa_esa_reference_excerpt.txt",
+      "p1_hit": 1,
+      "p3_hit": 1,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.1216000022832304,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "nasa_esa_reference_excerpt.txt",
+          "text_snippet": "NASA-STD-8719.14 and ESA debris guidance emphasize mission planning practices that reduce fragmentat"
+        }
+      ]
+    }
+  ]
+}

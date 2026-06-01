@@ -9,10 +9,16 @@ from pathlib import Path
 import numpy as np
 
 from .orbit_env import OrbitDebrisEnv
-from .policies import nearest_neighbor_policy, random_policy, risk_weighted_policy
+from .policies import (
+    branch_and_bound_policy,
+    nearest_neighbor_policy,
+    random_policy,
+    risk_weighted_policy,
+)
 
 
-POLICY_NAMES = ["random", "nearest", "risk_weighted"]
+POLICY_NAMES = ["random", "nearest", "risk_weighted", "branch_and_bound"]
+
 
 
 def parse_args() -> argparse.Namespace:
@@ -83,12 +89,15 @@ def run_policy(
                 action = nearest_neighbor_policy(env)
             elif name == "risk_weighted":
                 action = risk_weighted_policy(env)
+            elif name == "branch_and_bound":
+                action = branch_and_bound_policy(env)
             elif name == "ppo":
                 action_masks = env.action_masks()
                 action, _ = model.predict(obs, deterministic=True, action_masks=action_masks)  # type: ignore[union-attr]
                 action = int(action)
             else:
                 raise ValueError(f"Unknown policy name: {name}")
+
 
             obs, _, terminated, truncated, info = env.step(int(action))
             done = terminated or truncated

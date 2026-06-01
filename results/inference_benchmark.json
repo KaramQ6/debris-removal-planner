@@ -1,0 +1,9 @@
+{
+  "model_path": "ppo_debris_finetuned.zip",
+  "n_iterations": 10000,
+  "mean_latency_us": 950.35,
+  "std_latency_us": 101.8,
+  "median_latency_us": 930.1,
+  "p95_latency_us": 1099.4,
+  "p99_latency_us": 1296.01
+}
