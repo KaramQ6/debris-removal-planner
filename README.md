@@ -104,12 +104,6 @@ python -m rag.rag_system --query "What is the recommended disposal timeline for 
 ### 6. Explore everything interactively
 Open [`notebooks/walkthrough.ipynb`](notebooks/walkthrough.ipynb) to step through the full pipeline.
 
-## 🤖 AI Usage Disclosure
-
-This project was developed for sustainable orbital planning. AI assistance was limited to minor code scaffolding and initial document layout suggestions, with all core logic designed and verified by the author.
-
-**The core reinforcement learning architecture, orbital physics simulation, and training logic were designed and implemented entirely by the author.**
-
 ---
 
 *Intelligent Space Systems Research Group* 🚀
