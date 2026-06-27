@@ -1,0 +1,120 @@
+%% Paper 2 SKELETON — ICRA/IROS (IEEEtran conference).
+%% This is a structured skeleton: abstract is a working draft; sections are stubs with
+%% the arguments to make. Fill experiments once the policy + baseline are trained.
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{url}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+\begin{document}
+
+\title{Robust Detumbling of Tumbling Debris with Unknown Inertia using a
+Free-Floating Space Manipulator and Domain-Randomized Reinforcement Learning}
+
+\author{\IEEEauthorblockN{Karam Khasawneh \textit{et al.}}
+\IEEEauthorblockA{\textit{Dept.\ of Robotics and Artificial Intelligence}\\
+\textit{Jadara University}, Irbid, Jordan\\
+KaramQ5@ieee.org}}
+
+\maketitle
+
+\begin{abstract}
+Capturing and detumbling non-cooperative space debris is a defining challenge for on-orbit
+servicing: the target is tumbling, its mass and inertia are unknown, and the chaser is a
+\emph{free-floating} platform whose attitude is disturbed by every arm motion. Prior
+reinforcement-learning (RL) work for space manipulators concentrates on the pre-contact phase
+(reaching and tracking a grasp point), while post-grasp detumbling is handled by model-based
+controllers that assume known target dynamics. We address the gap with an RL controller for the
+\emph{post-grasp detumbling} phase that is explicitly trained to be \emph{robust to unknown target
+inertia} via domain randomization over the target mass, inertia tensor, and initial angular
+velocity. We evaluate in a MuJoCo free-floating-base simulation with full contact dynamics against
+an impedance / active-resistance baseline, reporting detumbling time, contact force, and induced
+base-attitude disturbance. \todo{headline result: learned policy holds success across $0.5\times$--$2\times$
+nominal inertia where the model-based baseline degrades by $Y\%$.}
+\end{abstract}
+
+\begin{IEEEkeywords}
+Space robotics, on-orbit servicing, active debris removal, reinforcement learning,
+free-floating manipulator, contact control, domain randomization.
+\end{IEEEkeywords}
+
+\section{Introduction}
+\todo{(1) debris + non-cooperative capture motivation; (2) the three sub-problems: reach, grasp,
+detumble; (3) the gap: RL stops at grasp, model-based detumbling assumes known inertia;
+(4) our contribution bullets; (5) contributions list.}
+
+Contributions:
+\begin{itemize}
+\item An RL formulation of \emph{post-grasp detumbling} on a free-floating base with contact dynamics.
+\item A domain-randomization scheme over target inertia that yields robustness to \emph{unknown} targets.
+\item A benchmark against a model-based detumbling baseline on detumble time, contact force, and
+      base-attitude disturbance, with an ablation isolating the randomization.
+\end{itemize}
+
+\section{Related Work}
+\todo{Three clusters (see literature\_review.md). A: high-level ADR sequencing (not us).
+B: pre-contact RL guidance/tracking on free-floating bases \cite{guidance2510,wei2025robotica}
+-- stops at grasp. C: contact/detumbling, mostly model-based \cite{activeresist2025}; RL soft-capture
+with tactile \cite{softcapture2409} lacks unknown-inertia robustness and model-based baselines.
+State precisely what is new here.}
+
+\section{Problem Formulation}
+\subsection{Free-floating dynamics}
+\todo{Equations of motion for base+arm with momentum conservation (zero external wrench);
+the coupling that makes arm motion disturb base attitude. Contact model (soft, friction).}
+
+\subsection{MDP}
+State $s\in\mathbb{R}^{32}$: base pose+twist, joint positions/velocities, target relative
+pose and angular velocity, end-effector-to-grasp vector. Action $a\in[-1,1]^3$: normalized joint
+torques. Reward penalizes target spin, end-effector distance, induced base angular velocity, and
+control effort, with a terminal bonus when the target angular velocity falls below a threshold:
+\begin{equation}
+r = -w_\omega\lVert\boldsymbol{\omega}_t\rVert - w_d d_{\text{eg}}
+    - w_b\lVert\boldsymbol{\omega}_b\rVert - w_u\lVert a\rVert^2 + r_{\text{term}}.
+\end{equation}
+\todo{This matches \texttt{robotic\_capture/sim/free\_flyer\_env.py}; lift weights once tuned.}
+
+\section{Method}
+\todo{Policy/algorithm (e.g.\ SAC/PPO from SB3); domain randomization distribution over
+target mass and inertia ($0.5\times$--$2\times$) and initial tumble; training curriculum; network.}
+
+\section{Baselines}
+\todo{Re-implement an impedance / active-resistance detumbling controller \cite{activeresist2025}
+tuned to nominal inertia. This is the comparison that makes the robustness claim meaningful.}
+
+\section{Experiments}
+\todo{Tables: (1) nominal-inertia detumble time \& contact force (no-free-lunch check);
+(2) robustness sweep across inertia scale -- success rate vs.\ baseline; (3) base-attitude
+disturbance with bootstrap CIs; (4) ablation: remove domain randomization. Report seeds, $N$,
+non-parametric tests + effect sizes (carry over Paper~1's statistical rigor).}
+
+\section{Limitations and Sim-to-Real}
+\todo{Contact-model fidelity; planar 3-DOF scaffold vs.\ 6-DOF arm; no hardware (state plainly);
+products of inertia; sensor noise. Name future high-fidelity / hardware validation.}
+
+\section{Conclusion}
+\todo{Restate the robustness-to-unknown-inertia result and its OOS relevance.}
+
+\begin{thebibliography}{9}
+\bibitem{guidance2510} ``Safe Obstacle-Free Guidance of Space Manipulators in Debris Removal
+Missions via Deep Reinforcement Learning,'' arXiv:2510.06566. \todo{full authors/venue}
+\bibitem{wei2025robotica} Y.\ Wei, X.\ Bai, H.\ Lu, ``Trajectory planning of free-floating space
+robot for non-cooperative tumbling target capture based on deep reinforcement learning,''
+\textit{Robotica}, 2025. \todo{vol/pp/doi}
+\bibitem{activeresist2025} ``Active resistance control: a contact control method for detumbling
+non-cooperative spacecraft by a robotic arm,'' \textit{Nonlinear Dynamics}, 2025,
+doi:10.1007/s11071-025-11381-z.
+\bibitem{softcapture2409} ``Improving Soft-Capture Phase Success in Space Debris Removal Missions:
+Leveraging Deep Reinforcement Learning and Tactile Feedback,'' arXiv:2409.12273.
+\bibitem{review2024} ``Review of Autonomous Space Robotic Manipulators for On-Orbit Servicing and
+Active Debris Removal,'' \textit{Space: Science \& Technology}, 2024, doi:10.34133/space.0291.
+\bibitem{domrand} X.\ B.\ Peng \textit{et al.}, ``Sim-to-Real Transfer of Robotic Control with
+Dynamics Randomization,'' arXiv:1710.06537.
+\end{thebibliography}
+\end{document}

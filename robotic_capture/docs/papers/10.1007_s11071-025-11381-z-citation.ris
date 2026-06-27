@@ -1,0 +1,18 @@
+TY  - JOUR
+AU  - Wang, Ru-Hao
+AU  - Liu, Xiao-Feng
+AU  - Cai, Guo-Ping
+PY  - 2025
+DA  - 2025/09/01
+TI  - Active resistance control: a contact control method for detumbling non-cooperative spacecraft by a robotic arm
+JO  - Nonlinear Dynamics
+SP  - 24937
+EP  - 24965
+VL  - 113
+IS  - 18
+AB  - Non-cooperative spacecraft often exhibit a tumbling motion, posing significant challenges for successful capture by space robots. Prior to capturing attempts, detumbling operations have become essential. Among various detumbling technologies, the robotic arm-based detumbling approach is relatively mature and easy to implement. However, key issues, particularly maintaining contact control problems, still need to be addressed. This paper provides a detailed investigation of the contact control issue and proposes a new contact control approach called active resistance control (ARC). Theoretical proof and numerical simulation show that this method can prevent the post-collision separation and track the desired contact force. Notably, the theoretical validation of ARC is derived from generalized contact model expressions rather than a specific contact model, ensuring broader applicability. Unlike existing methods, the control law of ARC relies only on measured contact force and does not require prior knowledge of the target’s inertial or contact parameters. This eliminates the need for target parameter identification in real-world tasks, making ARC more practical to implement. To apply this method to the detumbling tasks, this study introduces an ARC-based contact control strategy. The simulation results validate the efficiency of the proposed contact control strategy across diverse detumbling scenarios.
+SN  - 1573-269X
+UR  - https://doi.org/10.1007/s11071-025-11381-z
+DO  - 10.1007/s11071-025-11381-z
+ID  - Wang2025
+ER  - 
