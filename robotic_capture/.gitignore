@@ -1,0 +1,5 @@
+# Trained models, replay buffers, and training logs (large / regenerable).
+runs/
+# Python caches.
+**/__pycache__/
+*.pyc

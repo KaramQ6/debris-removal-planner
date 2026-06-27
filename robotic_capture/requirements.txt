@@ -1,0 +1,6 @@
+# Paper-2 (robotic-capture) dependencies — reuses the existing repo .venv.
+# Already present in the venv: numpy, scipy, gymnasium, stable-baselines3,
+# sb3-contrib, torch (cu126), matplotlib.
+mujoco>=3.1.0
+imageio>=2.34.0
+imageio-ffmpeg>=0.4.9

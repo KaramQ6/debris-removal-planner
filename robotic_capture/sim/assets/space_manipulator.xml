@@ -1,0 +1,49 @@
+<!-- Free-floating space manipulator + tumbling debris target.
+     Gravity is zero (orbital free-fall). The chaser base has a 6-DOF free joint, so
+     arm motion reacts back on the base (the free-floating coupling that defines the problem).
+     The target has its own free joint and is spun up at reset to tumble. -->
+<mujoco model="free_flyer_capture">
+  <option gravity="0 0 0" timestep="0.002" integrator="implicitfast"/>
+  <compiler angle="radian"/>
+
+  <default>
+    <joint armature="0.01" damping="0.2"/>
+    <geom density="500" friction="1 0.05 0.001" solref="0.01 1" solimp="0.9 0.95 0.001"/>
+  </default>
+
+  <worldbody>
+    <!-- Chaser: free-floating base + 3-DOF arm -->
+    <body name="base" pos="0 0 0">
+      <freejoint name="base_free"/>
+      <geom name="base_geom" type="box" size="0.4 0.4 0.4" rgba="0.30 0.50 0.80 1"/>
+      <body name="link1" pos="0.4 0 0">
+        <joint name="j1" type="hinge" axis="0 0 1"/>
+        <geom name="l1" type="capsule" fromto="0 0 0 0.5 0 0" size="0.05"/>
+        <body name="link2" pos="0.5 0 0">
+          <joint name="j2" type="hinge" axis="0 0 1"/>
+          <geom name="l2" type="capsule" fromto="0 0 0 0.5 0 0" size="0.05"/>
+          <body name="link3" pos="0.5 0 0">
+            <joint name="j3" type="hinge" axis="0 0 1"/>
+            <geom name="l3" type="capsule" fromto="0 0 0 0.3 0 0" size="0.04"/>
+            <site name="ee" pos="0.3 0 0" size="0.03" rgba="0 1 0 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <!-- Non-cooperative tumbling target debris. Placed so that the arm's "ready"
+         pose (set in env.reset) leaves a small clearance to the grasp face, i.e. the
+         policy/controller starts already at the target (post-grasp detumbling scope). -->
+    <body name="target" pos="1.75 0 0">
+      <freejoint name="target_free"/>
+      <geom name="target_geom" type="box" size="0.25 0.25 0.25" rgba="0.80 0.30 0.30 1"/>
+      <site name="grasp" pos="-0.25 0 0" size="0.03" rgba="1 1 0 1"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="m1" joint="j1" gear="1" ctrlrange="-5 5"/>
+    <motor name="m2" joint="j2" gear="1" ctrlrange="-5 5"/>
+    <motor name="m3" joint="j3" gear="1" ctrlrange="-5 5"/>
+  </actuator>
+</mujoco>
