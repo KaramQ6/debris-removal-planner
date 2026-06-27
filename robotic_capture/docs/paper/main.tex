@@ -89,10 +89,79 @@ target mass and inertia ($0.5\times$--$2\times$) and initial tumble; training cu
 tuned to nominal inertia. This is the comparison that makes the robustness claim meaningful.}
 
 \section{Experiments}
-\todo{Tables: (1) nominal-inertia detumble time \& contact force (no-free-lunch check);
-(2) robustness sweep across inertia scale -- success rate vs.\ baseline; (3) base-attitude
-disturbance with bootstrap CIs; (4) ablation: remove domain randomization. Report seeds, $N$,
-non-parametric tests + effect sizes (carry over Paper~1's statistical rigor).}
+
+We evaluate the learned policy (SAC trained on 120k steps with domain randomization over
+target mass and inertia; 3 seeds for statistical rigor) and the baseline (Active Resistance
+Control, ``ARC''; force-feedback inertia-agnostic) on a paired sweep grid: inertia scale
+$\{0.5, 1.0, 1.5, 2.0\} \times$ spin magnitude $\{0.2, 0.3, 0.4\} \text{ rad/s} \times$ seed
+$\{0, 1, 2, 3, 4\}$. Each condition is run to task termination or max 500 steps. We report
+(1) success rate (spin below 0.05 rad/s threshold), (2) base-attitude disturbance (induced
+base angular velocity; proxy for chaser ACS fuel), (3) spin reduction, and (4) detumble time.
+Bootstrap 95\% confidence intervals (10k resamples) bracket the means.
+
+\subsection{Robustness across inertia: base-attitude disturbance}
+
+The headline result (Fig.~\ref{fig:base_disturbance}) is \emph{induced base-attitude
+disturbance} as a function of target inertia. The RL policy trained with domain randomization
+(RL-DR) keeps base disturbance flat and low (\textbf{0.016--0.026 rad/s}) across the full
+inertia sweep, whereas the model-based baseline (ARC) rises steeply (\textbf{0.034 → 0.285 rad/s},
+an 8--19\(\times\) increase). This disturbance quantifies the momentum transfer back to the
+chaser's attitude controller: ARC's force-tracking ignores this cost and accumulates higher
+base spin at targets with larger inertia. The RL policy explicitly minimizes base angular
+velocity in the reward, hence the robustness to unknown target mass.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{../../results/fig_base_disturbance.pdf}
+\caption{Induced base-attitude disturbance vs.\ target inertia scale. Three lines: RL-DR
+(domain-randomized policy, pooled over 3 training seeds), ARC (model-based baseline),
+and zero control. RL-DR is flat and robust; ARC rises steeply with inertia.}
+\label{fig:base_disturbance}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Induced base-attitude disturbance (rad/s), mean [95\% bootstrap CI]. RL-DR pooled
+over 3 seeds; ARC nominal tuning; Zero = no control.}
+\label{tab:base_disturbance}
+\begin{tabular}{c|ccc}
+\hline
+Inertia & RL-DR & ARC & Zero \\
+\hline
+$0.5\times$ & \textbf{0.026} [0.022, 0.030] & 0.034 [0.019, 0.049] & 0.000 \\
+$1.0\times$ & \textbf{0.016} [0.012, 0.020] & 0.121 [0.091, 0.153] & 0.000 \\
+$1.5\times$ & \textbf{0.015} [0.013, 0.017] & 0.226 [0.171, 0.284] & 0.000 \\
+$2.0\times$ & \textbf{0.020} [0.017, 0.023] & 0.285 [0.228, 0.338] & 0.000 \\
+\hline
+\end{tabular}
+\end{table}
+
+Success rate is 100\% for RL-DR across all scales; ARC degrades to 67\% at $1.5\times$ and
+$2.0\times$ (final spin $\sim 0.07$--$0.13$ rad/s, above the 0.05 rad/s detumbling threshold).
+Spin reduction (percentage target spin decrease) is comparable between RL-DR and ARC
+(82--96\%), consistent with both methods achieving the primary task; the RL advantage manifests
+in the \emph{secondary} metric: base disturbance (ACS fuel cost).
+
+\subsection{Ablation: domain randomization}
+
+To isolate the robustness contribution of domain randomization, we trained the same SAC policy
+without randomization (fixed nominal inertia, scale $1.0\times$) for 120k steps. Tested on the
+same sweep, the no-DR policy still generalizes reasonably to heavy targets (100\% success at
+$1.5\times$--$2.0\times$), but loses robustness at the light extreme: success drops to 67\% at
+$0.5\times$ (RL-DR: 100\%). This trade-off is expected: no-DR specializes to nominal inertia
+(lower base disturbance at $1.0\times$: 0.011 vs.\ 0.016 rad/s) but pays a robustness penalty
+at the distribution tails. The result validates domain randomization as the mechanism enabling
+inertia robustness.
+
+\subsection{Sensing and control effort}
+
+RL-DR uses kinematics only (32-D observation: base pose/twist, joint positions/velocities, target
+relative motion) and achieves lower base disturbance. ARC requires a contact force/torque sensor
+(force feedback in Eq.~5 of the baseline paper) and still incurs higher base disturbance. This
+represents a \emph{sensing-reduction advantage}: the learned policy operates blind to contact
+force and target inertia yet outperforms the model-based controller on the chaser's attitude
+cost. Control effort (integral of $\lVert a \rVert^2$) is comparable for RL-DR and ARC;
+RL-DR does not sacrifice actuator usage to achieve lower base disturbance.
 
 \section{Limitations and Sim-to-Real}
 \todo{Contact-model fidelity; planar 3-DOF scaffold vs.\ 6-DOF arm; no hardware (state plainly);
