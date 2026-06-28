@@ -146,6 +146,32 @@ base. The off-diagonal (base--arm) blocks of $\mathbf{M}$ are the coupling that 
 free-floating platform fundamentally different from a fixed-base arm. Contact is modeled as a soft,
 friction-bearing interaction (MuJoCo's compliant contact model).
 
+\subsection{Simulation scaffold}
+We implement the scaffold in MuJoCo (Fig.~\ref{fig:scene}) with zero gravity (orbital free-fall),
+a $2$\,ms physics timestep (implicit-fast integrator), and control applied at $100$\,Hz (a
+frame-skip of $5$). The chaser is a free-floating base ($256$\,kg, $0.8$\,m box, a 6-DOF free
+joint) carrying a planar $3$-DOF arm whose three revolute joints rotate about the out-of-plane
+($z$) axis, with capsule links of length $0.5/0.5/0.3$\,m driven by three torque motors saturating
+at $\pm 5$\,N\,m. The non-cooperative target is a rigid $0.5$\,m box ($62.5$\,kg nominal, diagonal
+inertia $\approx 2.6$\,kg\,m$^2$) on its own free joint, spun up at reset to tumble. Contact uses
+MuJoCo's compliant model (friction coefficients $(1, 0.05, 0.001)$, soft-constraint
+\texttt{solref} $(0.01, 1)$), so contact forces are continuous rather than rigid-impulsive. The
+arm's ready pose places the end-effector a $\approx 0.1$\,m clearance from the target's grasp face,
+i.e.\ episodes begin already at the target (post-grasp detumbling scope). Each episode runs at most
+$500$ control steps ($5$\,s) and terminates early once the target spin falls below the detumbling
+threshold; the policy observes a $32$-D kinematic subset of the full $17/15$ position/velocity state
+(the MDP below).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig_scene.pdf}
+\caption{The free-floating capture scaffold at the post-grasp ready pose (MuJoCo): a free-floating
+chaser base and planar $3$-DOF arm (left), end-effector at a small clearance from the grasp face of
+the tumbling, non-cooperative target (right). Arm motion reacts onto the base; a chaser-side base
+torque (ACS/thruster-noise proxy) and the target's spin act during contact.}
+\label{fig:scene}
+\end{figure}
+
 \subsection{Chaser-side base-attitude disturbance}
 We model unmodeled chaser actuation noise (ACS/thruster transients) as an external torque
 $\mathbf{w}_{\text{ext}}$ applied to the base about the planar detumbling axis, constant in
