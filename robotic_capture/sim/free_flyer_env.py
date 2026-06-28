@@ -2,12 +2,14 @@
 
 A 3-DOF arm on a 6-DOF free-floating chaser base must reach a tumbling, non-cooperative
 target and detumble it. Gravity is zero (orbital free-fall), so arm motion reacts back on the
-base -- the dynamic coupling that defines space robotics. Target mass/inertia are domain-randomized
-at reset so a learned policy can be made robust to *unknown* target inertia (the paper's thesis).
+base -- the dynamic coupling that defines space robotics. Two disturbance axes are randomized at
+reset: target mass/inertia (the inertia *parity* check) and a constant chaser-side base torque
+(``base_disturbance``) standing in for ACS/thruster noise -- the paper's headline is that a
+base-penalised policy *rejects* the latter where ARC's force-tracking law does not.
 
-This is the simulation scaffold for the locked contribution in ``docs/contribution.md``: it is a
-planar 3-DOF arm and a diagonal-inertia rigid target -- intentionally minimal so the control/MDP
-and reward can be validated before scaling up fidelity.
+This is the simulation scaffold for the contribution in ``docs/contribution.md``: a planar 3-DOF
+arm and a diagonal-inertia rigid target -- intentionally minimal so the control/MDP and reward can
+be validated before scaling up fidelity.
 """
 
 from __future__ import annotations
@@ -51,6 +53,8 @@ class FreeFlyerCaptureEnv(gym.Env):
         frame_skip: int = 5,
         tumble_max: float = 0.5,
         detumble_tol: float = 0.02,
+        base_disturbance: float = 0.0,
+        w_base: float = 0.3,
         seed: int | None = None,
     ) -> None:
         if mujoco is None:
@@ -68,14 +72,19 @@ class FreeFlyerCaptureEnv(gym.Env):
         self.frame_skip = frame_skip
         self.tumble_max = tumble_max          # rad/s, per-axis initial spin bound
         self.detumble_tol = detumble_tol      # rad/s, "detumbled" threshold
+        self.base_disturbance = base_disturbance  # N*m, max ACS/thruster torque on the base (0 = off)
+        self._dist_torque = np.zeros(3)       # per-episode disturbance wrench (set in reset)
 
-        # reward weights
-        self.w_tumble, self.w_dist, self.w_base, self.w_ctrl = 1.0, 0.5, 0.3, 0.01
+        # reward weights. w_base is the base-attitude penalty -- the disturbance-rejection
+        # channel; the ablation (criterion 4) sets it to 0 to isolate that mechanism.
+        self.w_tumble, self.w_dist, self.w_ctrl = 1.0, 0.5, 0.01
+        self.w_base = w_base
 
         self.ctrl_max = float(self.model.actuator_ctrlrange[:, 1].max())
 
         # cache addresses (robust across mujoco versions)
         self._base_dof = self._dof_adr("base_free")
+        self._base_bid = self._body_id("base")
         self._tgt_dof = self._dof_adr("target_free")
         self._tgt_qpos = self._qpos_adr("target_free")
         self._ee_sid = self._site_id("ee")
@@ -113,7 +122,7 @@ class FreeFlyerCaptureEnv(gym.Env):
         super().reset(seed=seed)
         mujoco.mj_resetData(self.model, self.data)
 
-        # Domain randomization over target inertia (the robustness contribution).
+        # Domain randomization over target inertia (the inertia parity check).
         # ponytail: scales the diagonal principal inertia only; off-diagonal/products
         # of inertia are a future-fidelity upgrade, not needed to validate the MDP.
         # An explicit ``inertia_scale`` in ``options`` overrides both (used by the
@@ -147,6 +156,22 @@ class FreeFlyerCaptureEnv(gym.Env):
             omega = np.array([0.0, 0.0, self.np_random.uniform(-self.tumble_max, self.tumble_max)])
         self.data.qvel[self._tgt_dof + 3 : self._tgt_dof + 6] = omega
 
+        # Chaser-side base-attitude disturbance (proxy for unmodeled ACS/thruster noise):
+        # a constant external torque on the base about the planar detumbling axis (z),
+        # random sign per episode. This is the headline gap -- ARC's force-tracking law has
+        # no term that responds to it, so the base spins up; the base-penalised policy must
+        # reject it via arm reaction. Magnitude: fixed by ``base_disturbance`` in options
+        # (evaluation sweep), domain-randomized in [0, base_disturbance] during training,
+        # or the constructor default otherwise.
+        if options is not None and "base_disturbance" in options:
+            mag = float(options["base_disturbance"])
+        elif self.domain_randomize and self.base_disturbance > 0.0:
+            mag = float(self.np_random.uniform(0.0, self.base_disturbance))
+        else:
+            mag = self.base_disturbance
+        sign = 1.0 if self.np_random.random() < 0.5 else -1.0
+        self._dist_torque = np.array([0.0, 0.0, sign * mag])
+
         mujoco.mj_forward(self.model, self.data)
         self._steps = 0
         return self._obs(), self._info()
@@ -154,6 +179,8 @@ class FreeFlyerCaptureEnv(gym.Env):
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         a = np.clip(np.asarray(action, dtype=float), -1.0, 1.0)
         self.data.ctrl[:] = a * self.ctrl_max
+        # Persistent base disturbance torque (sampled per episode in reset()).
+        self.data.xfrc_applied[self._base_bid, 3:6] = self._dist_torque
         mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
         self._steps += 1
 
@@ -203,6 +230,7 @@ class FreeFlyerCaptureEnv(gym.Env):
             "ncon": int(self.data.ncon),
             "target_mass": float(self.model.body_mass[self._tgt_bid]),
             "inertia_scale": float(getattr(self, "_inertia_scale", 1.0)),
+            "base_disturbance_torque": float(np.linalg.norm(self._dist_torque)),
         }
 
     def _net_contact_force(self) -> float:

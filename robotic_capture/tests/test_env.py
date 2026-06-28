@@ -52,3 +52,25 @@ def test_no_randomization_fixed_mass():
     _, i0 = env.reset(seed=0)
     _, i1 = env.reset(seed=7)
     assert i0["target_mass"] == pytest.approx(i1["target_mass"])
+
+
+def test_zero_disturbance_leaves_base_at_rest():
+    """No disturbance + no action + non-tumbling target => base stays at rest."""
+    env = _make()  # base_disturbance defaults to 0
+    env.reset(seed=2, options={"target_angvel": [0.0, 0.0, 0.0], "base_disturbance": 0.0})
+    for _ in range(50):
+        env.step([0.0, 0.0, 0.0])
+    assert env._info()["base_angvel_norm"] < 1e-6, "base moved with no disturbance and no action"
+
+
+def test_base_disturbance_torque_spins_base():
+    """A nonzero base disturbance torque must spin the base up even with zero action.
+
+    This is the headline mechanism: without a controller rejecting it, the injected
+    ACS/thruster-proxy torque drives the chaser base attitude away.
+    """
+    env = _make()
+    env.reset(seed=2, options={"target_angvel": [0.0, 0.0, 0.0], "base_disturbance": 1.0})
+    for _ in range(50):
+        env.step([0.0, 0.0, 0.0])
+    assert env._info()["base_angvel_norm"] > 1e-3, "base disturbance torque had no effect"
