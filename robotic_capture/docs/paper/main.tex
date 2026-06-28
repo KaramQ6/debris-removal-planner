@@ -204,13 +204,12 @@ detumble the target while rejecting that disturbance.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.86\textwidth]{figures/fig_system.pdf}
-\caption{Method overview (closed-loop control diagram). The free-floating MuJoCo environment (chaser
-base + planar $3$-DOF arm + tumbling non-cooperative target, with compliant contact) emits a $32$-D
-\emph{kinematic} observation --- no force/torque sensor; the SAC policy returns normalized joint
-torques; an injected chaser-side base disturbance $w_{\mathrm{ext}}$ (ACS/thruster-noise proxy)
-perturbs the base during contact; and the reward of Eq.~\eqref{eq:reward}, through its base-attitude
-penalty $w_b$, trains the policy to detumble the target \emph{and} reject that disturbance.}
+\includegraphics[width=0.82\textwidth]{figures/fig_system.pdf}
+\caption{Method overview (closed-loop control diagram). The free-floating MuJoCo environment emits a
+$32$-D \emph{kinematic} observation (no force/torque sensor); the SAC policy returns joint torques; an
+injected chaser-side base disturbance $w_{\mathrm{ext}}$ (ACS/thruster-noise proxy) perturbs the base
+during contact; and the reward of Eq.~\eqref{eq:reward}, via its base-attitude penalty $w_b$, trains
+the policy to detumble while rejecting it.}
 \label{fig:system}
 \end{figure*}
 

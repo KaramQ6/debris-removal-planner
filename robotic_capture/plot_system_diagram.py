@@ -40,37 +40,37 @@ def main() -> None:
     p.add_argument("--out", type=str, default="docs/paper/figures/fig_system.pdf")
     args = p.parse_args()
 
-    fig, ax = plt.subplots(figsize=(7.0, 3.0))
+    # Compact wide-banner layout so the two-column figure* packs onto the page with text
+    # (a tall diagram floats alone and leaves a large white gap).
+    fig, ax = plt.subplots(figsize=(7.5, 2.2))
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 5.3)
+    ax.set_ylim(0, 3.2)
     ax.axis("off")
 
-    _box(ax, 0.4, 1.7, 4.6, 2.05,
+    _box(ax, 0.4, 0.7, 4.4, 1.8,
          "Free-floating environment (MuJoCo)\n"
          "chaser base + planar 3-DOF arm\n"
-         "+ tumbling non-cooperative target\n"
-         "compliant contact,  zero-$g$", BLUE)
-    _box(ax, 6.6, 2.15, 3.0, 1.3, "SAC policy $\\pi$\n$[256,256]$ MLP", GREEN)
+         "+ tumbling target,  compliant contact", BLUE)
+    _box(ax, 6.7, 1.05, 3.0, 1.1, "SAC policy $\\pi$\n$[256,256]$ MLP", GREEN)
 
     # obs (top, env -> policy) and action (bottom, policy -> env)
-    _arrow(ax, (5.0, 3.15), (6.6, 3.15))
-    ax.text(5.8, 3.38, "obs $s\\in\\mathbb{R}^{32}$ (kinematics only)",
+    _arrow(ax, (4.8, 1.95), (6.7, 1.95))
+    ax.text(5.75, 2.12, "obs $s\\in\\mathbb{R}^{32}$ (kinematics only)",
             ha="center", va="bottom", fontsize=8)
-    _arrow(ax, (6.6, 2.45), (5.0, 2.45))
-    ax.text(5.8, 2.22, "torque $\\tau$ ($\\pm 5$ N$\\cdot$m)", ha="center", va="top", fontsize=8)
+    _arrow(ax, (6.7, 1.25), (4.8, 1.25))
+    ax.text(5.75, 1.08, "torque $\\tau$ ($\\pm 5$ N$\\cdot$m)", ha="center", va="top", fontsize=8)
 
-    # injected base disturbance (top -> env)
-    _box(ax, 0.7, 4.5, 3.9, 0.7,
-         "base disturbance $w_{\\mathrm{ext}}$  (ACS/thruster-noise proxy)", RED)
-    _arrow(ax, (2.65, 4.5), (2.65, 3.75), color="#b22222", lw=1.6)
+    # injected base disturbance (label + red arrow into the env top)
+    ax.text(2.6, 3.12, "base disturbance $w_{\\mathrm{ext}}$  (ACS/thruster-noise proxy)",
+            ha="center", va="top", fontsize=8, color="#b22222")
+    _arrow(ax, (2.6, 2.82), (2.6, 2.5), color="#b22222", lw=1.6)
 
-    # reward channel (training signal), routed below everything as a dashed feedback path
+    # reward channel (training signal), routed below as a dashed feedback path
     dash = dict(color="#555555", lw=1.2, ls=(0, (4, 3)))
-    ax.plot([4.1, 4.1], [1.7, 1.0], **dash)
-    ax.plot([4.1, 8.1], [1.0, 1.0], **dash)
-    _arrow(ax, (8.1, 1.0), (8.1, 2.15), color="#555555", lw=1.2, ls=(0, (4, 3)))
-    ax.text(6.1, 0.78, "reward $r$ (Eq. 1)", ha="center", va="top", fontsize=8,
-            color="#555555")
+    ax.plot([4.2, 4.2], [0.7, 0.4], **dash)
+    ax.plot([4.2, 8.2], [0.4, 0.4], **dash)
+    _arrow(ax, (8.2, 0.4), (8.2, 1.05), color="#555555", lw=1.2, ls=(0, (4, 3)))
+    ax.text(6.0, 0.28, "reward $r$ (Eq. 1)", ha="center", va="top", fontsize=8, color="#555555")
 
     fig.tight_layout(pad=0.2)
     out = Path(args.out)
