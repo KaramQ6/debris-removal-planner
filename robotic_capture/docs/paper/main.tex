@@ -241,9 +241,27 @@ pre-contact Cartesian reach, then a two-phase force-feedback normal law (an anti
 followed by incremental contact-force tracking) combined with a tangential motion controller that
 opposes the contact-point surface velocity to bleed the target's spin. The law uses only measured
 contact force and relative motion --- no target mass or inertia --- and therefore requires a
-contact-force sensor. Gains are tuned to our simulation scaffold. We also include a \textbf{zero}
-controller (no torque) as a do-nothing reference, whose induced base spin equals the injected
-open-loop disturbance and whose target spin is essentially unchanged.
+contact-force sensor. Gains are tuned to our simulation scaffold.
+
+Concretely, before contact a Cartesian PD reaches the grasp point,
+$\mathbf{f}_{\text{ee}} = k_p(\mathbf{x}_g - \mathbf{x}_{\text{ee}}) - k_d\dot{\mathbf{x}}_{\text{ee}}$.
+On contact, the ARC normal-force magnitude follows the published two-phase law: an anti-separation
+phase $u = \beta_1\max_t F_c$ for the first $T_s$ contact steps, then incremental tracking
+$u \leftarrow u + \beta_2 (F^\star - F_c)$ (clamped to $[0, u_{\max}]$), applied along the inward
+contact normal $\hat{\mathbf{n}}$. A tangential controller opposes the contact-point surface velocity
+$\mathbf{v}_{\text{surf}} = \boldsymbol{\omega}_t \times \mathbf{r}$ to bleed the target's spin, and
+joint torques follow from the end-effector Jacobian transpose:
+\begin{equation}
+\label{eq:arc}
+\mathbf{f}_{\text{ee}} = u\,\hat{\mathbf{n}} - k_r\,\mathbf{v}_{\text{tan}}, \qquad
+\boldsymbol{\tau} = \mathbf{J}_{\text{ee}}^{\top}\mathbf{f}_{\text{ee}} - k_v\,\dot{\mathbf{q}}_a,
+\end{equation}
+where $\mathbf{v}_{\text{tan}}$ is the component of $\mathbf{v}_{\text{surf}}$ orthogonal to
+$\hat{\mathbf{n}}$. Every quantity is measured ($F_c$, $\boldsymbol{\omega}_t$, end-effector
+kinematics); no target inertia enters, so ARC is inertia-agnostic by construction. We use
+$F^\star=20$\,N, $\beta_1=\beta_2=0.5$, $T_s=10$ steps, $k_p=40$, $k_d=8$, and $k_r=8$.
+We also include a \textbf{zero} controller (no torque) as a do-nothing reference, whose induced base
+spin equals the injected open-loop disturbance and whose target spin is essentially unchanged.
 
 \section{Experiments}
 
@@ -281,6 +299,7 @@ and flat (it ignores base attitude); zero tracks the injected level.}
 pooled over 3 seeds; Zero = no control (open-loop reference). Both RL and ARC achieve $100\%$
 detumbling success here.}
 \label{tab:base_disturbance}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{c|ccc}
 \hline
 Injected (rad/s) & RL (ours) & ARC & Zero \\
@@ -290,7 +309,7 @@ $0.07$ & \textbf{0.023} [0.020, 0.026] & 0.124 [0.092, 0.156] & 0.070 \\
 $0.09$ & \textbf{0.024} [0.020, 0.027] & 0.126 [0.094, 0.158] & 0.087 \\
 $0.12$ & \textbf{0.025} [0.021, 0.028] & 0.128 [0.096, 0.162] & 0.122 \\
 \hline
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \subsection{Inertia parity}
@@ -313,6 +332,7 @@ relevant parity metric.
 reduction. RL pooled over 3 seeds. RL success is $100\%$ at all scales; ARC success is $100\%$ at
 $0.5$--$1\times$ and $67\%$ at $1.5$--$2\times$.}
 \label{tab:parity}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{c|cc|cc}
 \hline
 Inertia & RL base & ARC base & RL spin\% & ARC spin\% \\
@@ -322,7 +342,7 @@ $1.0\times$ & \textbf{0.022} [0.019, 0.025] & 0.121 [0.091, 0.153] & 85 & 83 \\
 $1.5\times$ & \textbf{0.038} [0.033, 0.043] & 0.246 [0.179, 0.320] & 84 & 82 \\
 $2.0\times$ & \textbf{0.046} [0.040, 0.053] & 0.294 [0.234, 0.353] & 83 & 74 \\
 \hline
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{figure}[t]
