@@ -197,6 +197,23 @@ $w_b\lVert\boldsymbol{\omega}_b\rVert$ term is the \emph{base-attitude penalty} 
 drives disturbance rejection; the ablation in Sec.~\ref{sec:ablation} sets $w_b=0$.
 
 \section{Method}
+Fig.~\ref{fig:system} summarizes the closed-loop setup: a kinematics-only observation drives the SAC
+policy, whose torques act on the free-floating environment; an injected chaser-side base disturbance
+perturbs the chaser during contact, and the reward of Eq.~\eqref{eq:reward} trains the policy to
+detumble the target while rejecting that disturbance.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.86\textwidth]{figures/fig_system.pdf}
+\caption{Method overview (closed-loop control diagram). The free-floating MuJoCo environment (chaser
+base + planar $3$-DOF arm + tumbling non-cooperative target, with compliant contact) emits a $32$-D
+\emph{kinematic} observation --- no force/torque sensor; the SAC policy returns normalized joint
+torques; an injected chaser-side base disturbance $w_{\mathrm{ext}}$ (ACS/thruster-noise proxy)
+perturbs the base during contact; and the reward of Eq.~\eqref{eq:reward}, through its base-attitude
+penalty $w_b$, trains the policy to detumble the target \emph{and} reject that disturbance.}
+\label{fig:system}
+\end{figure*}
+
 \subsection{Soft Actor-Critic objective}
 We train a Soft Actor-Critic (SAC) policy --- an off-policy actor-critic for continuous control that
 augments the expected return with a policy-entropy bonus, trading exploitation against exploration.
