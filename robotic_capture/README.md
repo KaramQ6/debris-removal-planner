@@ -1,6 +1,6 @@
 # 🤖 Robotic Capture & Detumbling of Tumbling Debris (Paper 2)
 
-**Status:** early scaffolding · **Target venue:** top-tier robotics (ICRA / IROS / RA-L)
+**Status:** manuscript in progress — env, baseline, 3-seed results & figures done; drafting `docs/paper/main.tex` · **Target venue:** top-tier robotics (ICRA / IROS / RA-L)
 
 A *separate, self-contained* research project for the second paper. It studies **autonomous
 capture and detumbling of a tumbling debris target using a free-floating space manipulator**,
@@ -24,14 +24,37 @@ Learned capture + detumbling of a tumbling target with **unknown inertia**, on a
 base, via RL + domain randomization, benchmarked against **strong model-based baselines**
 (impedance / MPC), reporting contact forces and base disturbance.
 
+## Latest results (3 seeds, 95% bootstrap CIs)
+Regenerate with `python -m robotic_capture.make_results` → `results/eval_tables_full.md`.
+
+**Headline — base-attitude disturbance rejection** (peak induced base rate, rad/s; lower is better,
+target inertia held at 1×). The base-penalised policy stays flat while ARC tracks contact force only:
+
+| injected (rad/s) | RL (ours) | RL ablation (w_b=0) | ARC | zero-control |
+|---|---|---|---|---|
+| 0.05 | **0.023** | 0.035 | 0.123 | 0.052 |
+| 0.12 | **0.025** | 0.036 | 0.128 | 0.122 |
+
+→ **≈80% lower peak base disturbance than ARC (~5×)** across the sweep; the ablation degrades but does
+**not** collapse to ARC's level, so the base-attitude reward is a contributing (not sole) mechanism.
+
+**Inertia parity check** (no injected disturbance) — confirms ARC is inertia-agnostic *by design*, so
+this is parity, **not** a "model-based fails under unknown inertia" claim. The RL–ARC base-disturbance
+**gap grows with target mass** (ratio ARC/RL): **2.8× @ 0.5× → 6.4× @ 2×**; RL detumble success stays
+100% while ARC drops to 67% at ≥1.5× (attributed to horizon/gain tuning, not inertia ignorance).
+
 ## Structure
 - `docs/literature_review.md` — Phase 0: prior-art gap analysis + locked novelty.
-- `docs/contribution.md` — one-paragraph claim + paper outline.
-- `docs/paper/` — LaTeX manuscript (later).
-- `sim/` — MuJoCo free-floating manipulator + tumbling target Gymnasium environment.
-- `sim/assets/` — MJCF (`.xml`) physics models.
-- `tests/` — self-checks (`pytest`).
-- `notes/` — working notes.
+- `docs/contribution.md` — one-paragraph claim + paper outline (post-ARC pivot).
+- `docs/paper/` — LaTeX manuscript (`main.tex`) + `figures/` (Overleaf-ready paths).
+- `sim/free_flyer_env.py` — MuJoCo free-floating manipulator + tumbling target Gym env; `sim/assets/` MJCF models.
+- `control/baselines.py` — `ARCController` (baseline), `ZeroController` (reference), `PolicyController` (RL adapter).
+- `train.py` — SAC training (`--base-disturbance`, `--w-base`, `--domain-randomize`) → `runs/`.
+- `eval.py` — paired sweeps (disturbance / inertia / spin / seeds) with bootstrap CIs → `results/`.
+- `make_results.py` — regenerates all three Results tables (pooled over 3 seeds) → `results/eval_tables_full.md`.
+- `plot_base_disturbance.py` · `plot_disturbance_vs_inertia.py` · `plot_learning_curve.py` · `render_scene.py`
+  · `plot_system_diagram.py` — paper figures → `docs/paper/figures/`.
+- `tests/` — self-checks (`pytest`). `notes/` — working notes. `runs/` (git-ignored) models/logs. `results/` tables/CSVs.
 
 ## Setup
 ```powershell
@@ -45,12 +68,18 @@ pytest robotic_capture/tests/
 1. ✅ Build the simulator (free-floating base + 3-DOF arm + tumbling target + contact).
 2. ✅ Formulate the control MDP (state / action / reward).
 3. ✅ Strong model-based baseline — **ARC** (force-tracking, inertia-agnostic) in `control/baselines.py`.
-4. ◐ Learned policy + domain randomization (`train.py`, SAC; `--no-domain-randomize` for the ablation).
-5. ◐ Evaluation + sweeps (`eval.py`): **headline = base-attitude disturbance vs target inertia**
-   (chaser ACS fuel), with spin reduction as a parity check; bootstrap CIs → `results/`.
+4. ✅ Learned policy + domain randomization — 3 seeds main (`sac_dist_seed{0,1,2}`, w_base=0.3) +
+   3 seeds ablation (`sac_dist_ablate_seed{0,1,2}`, w_base=0), all `base_disturbance=0.8`, 120k steps.
+5. ✅ Evaluation + sweeps (`eval.py`): headline base-attitude disturbance rejection, inertia parity,
+   and gap-vs-mass; bootstrap CIs + figures → `results/` and `docs/paper/figures/`.
+6. ◐ Writing the manuscript (`docs/paper/main.tex`) — results & figures in; drafting + Overleaf export.
 
-Run: `python -m robotic_capture.train --timesteps 120000 --out runs/sac_dr`
-then `python -m robotic_capture.eval --policy runs/sac_dr.zip`.
+Run (train one seed, evaluate, regenerate tables):
+```powershell
+python -m robotic_capture.train --timesteps 120000 --w-base 0.3 --seed 0 --out robotic_capture/runs/sac_dist_seed0
+python -m robotic_capture.eval --policy robotic_capture/runs/sac_dist_seed0.zip
+python -m robotic_capture.make_results   # pools the 3 trained seeds into the Results tables
+```
 
 > **Framing note (post-ARC pivot):** ARC is inertia-agnostic *by design*, so the claim is **not**
 > "model-based fails under unknown inertia." The contribution is lower induced base disturbance

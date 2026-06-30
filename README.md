@@ -61,7 +61,8 @@ We evaluated our system against the **Medium Scenario** (100 episodes, 12,000 m/
 - 📂 **`/results`**: [Evaluation summary](results/evaluation_summary.json), training history, trained model.
 - 📂 **`/assets`**: 3D mission visualizations and interactive Plotly HTMLs.
 - 📂 **`/notebooks`**: [End-to-end walkthrough notebook](notebooks/walkthrough.ipynb) — reproduces every headline result.
-- 📂 **`/tests`**: 43 unit tests (`pytest`) covering orbital mechanics, scenarios, RAG indexing, and reward shaping.
+- 📂 **`/tests`**: 47 unit tests (`pytest`) covering orbital mechanics, scenarios, RAG indexing, and reward shaping.
+- 📂 **`/robotic_capture`**: Paper 2 — RL contact detumbling of a tumbling target with a free-floating manipulator (separate, self-contained project; see [robotic_capture/README.md](robotic_capture/README.md)).
 
 ## 🚀 Quick Start & Reproduction
 
@@ -88,7 +89,7 @@ Or test on real-world debris data:
 ```powershell
 python -m simulation.evaluate --episodes 100 `
     --model-path results/models/ppo_debris_finetuned.zip `
-    --scenario Data_For_Test.json --fuel 12000 --max-steps 50
+    --scenario data/Data_For_Test.json --fuel 12000 --max-steps 50
 ```
 
 ### 4. Train from scratch (optional — ~15 min on a modern GPU)
